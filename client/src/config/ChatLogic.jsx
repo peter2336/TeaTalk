@@ -63,6 +63,8 @@ export const differentDate = (messages, m, i) => {
     (i > 1 &&
       new Date(m.createdAt).toDateString() !==
         new Date(messages[i - 1].createdAt).toDateString()) ||
-    i === 0
+    i === 0 ||
+    new Date(m.createdAt).toDateString() !==
+      new Date(messages[i - 1].createdAt).toDateString()
   ); //上一個訊息與當前訊息日期不同
 };
