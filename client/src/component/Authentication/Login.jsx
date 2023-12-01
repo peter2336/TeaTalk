@@ -30,6 +30,7 @@ const Login = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const { onOpen } = useDisclosure();
+  const API_URL = "https://teatalk.onrender.com";
 
   const submitHandler = async () => {
     setLoading(true);
@@ -47,13 +48,10 @@ const Login = () => {
 
     try {
       setLoading(true);
-      const { data } = await axios.post(
-        "http://localhost:8080/api/user/login",
-        {
-          email,
-          password,
-        }
-      );
+      const { data } = await axios.post(`${API_URL}/api/user/login`, {
+        email,
+        password,
+      });
       toast({
         description: "登入成功",
         status: "success",
@@ -81,13 +79,10 @@ const Login = () => {
   const guestLogin = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.post(
-        "http://localhost:8080/api/user/login",
-        {
-          email: "guest@example.com",
-          password: "123456",
-        }
-      );
+      const { data } = await axios.post(`${API_URL}/api/user/login`, {
+        email: "guest@example.com",
+        password: "123456",
+      });
       toast({
         description: "登入成功",
         status: "success",

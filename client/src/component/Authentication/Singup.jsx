@@ -32,6 +32,7 @@ const Singup = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const { onOpen } = useDisclosure();
+  const API_URL = "https://teatalk.onrender.com";
 
   //註冊帳號
   const submitHandler = async () => {
@@ -62,7 +63,7 @@ const Singup = () => {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:8080/api/user/register",
+        `${API_URL}/api/user/register`,
         { name, email, password, pic },
         {
           headers: {
