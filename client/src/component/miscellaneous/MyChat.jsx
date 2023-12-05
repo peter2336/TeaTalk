@@ -143,10 +143,12 @@ const MyChat = ({ fetchAgain }) => {
                 </Box>
 
                 <Box position="absolute" right={3} top={2}>
-                  {isToday(
-                    new Date(),
-                    new Date(chatData.latestMessage?.createdAt)
-                  ) ? (
+                  {!chatData.hasOwnProperty("latestMessage") ? (
+                    <></>
+                  ) : isToday(
+                      new Date(),
+                      new Date(chatData.latestMessage?.createdAt)
+                    ) ? (
                     <Text fontSize="xs" color="#949494">
                       {moment(chatData.latestMessage?.createdAt)
                         .toDate()
