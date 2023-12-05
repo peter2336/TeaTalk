@@ -68,3 +68,11 @@ export const differentDate = (messages, m, i) => {
       new Date(messages[i - 1].createdAt).toDateString()
   ); //上一個訊息與當前訊息日期不同
 };
+
+export const isToday = (date1, date2) => {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+};

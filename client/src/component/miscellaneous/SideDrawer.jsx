@@ -177,7 +177,18 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
               h="48px"
             >
               {notification.length > 0 && (
-                <div className="counter">{notification.length}</div>
+                <Box
+                  position="absolute"
+                  top="3px"
+                  left="3px"
+                  bg="red"
+                  borderRadius="full"
+                  px={1}
+                  fontSize="xs"
+                  color="white"
+                >
+                  {notification.length}
+                </Box>
               )}
               <Box justifyContent="center" display="flex">
                 <Bell size="20px" />

@@ -2,14 +2,25 @@ import React, { useEffect, useState } from "react";
 import { ChatState } from "../../context/ChatProvider";
 import { Avatar, Box, Divider, Stack, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
-import { getSender, getSenderPic } from "../../config/ChatLogic";
+import { getSender, getSenderPic, isToday } from "../../config/ChatLogic";
+import moment from "moment";
 
 const MyChat = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
-  const { selectedChat, setSelectedChat, chat, setChat } = ChatState();
+  const {
+    selectedChat,
+    setSelectedChat,
+    chat,
+    setChat,
+    notification,
+    setNotification,
+  } = ChatState();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const API_URL = "https://teatalk.onrender.com";
+
+  const timeRegex = /\S{2}\d+\:+\d+/;
+  const dateRegex = /\d+\/\d+\/\d+/;
 
   const fetchChat = async () => {
     try {
@@ -79,7 +90,12 @@ const MyChat = ({ fetchAgain }) => {
           <Stack overflowY="scroll">
             {chat?.map((chatData) => (
               <Box
-                onClick={() => setSelectedChat(chatData)}
+                onClick={() => {
+                  setSelectedChat(chatData);
+                  setNotification(
+                    notification.filter((n) => n.chat._id !== selectedChat._id)
+                  );
+                }}
                 cursor="pointer"
                 bg={selectedChat?._id === chatData._id ? "#3F3F46" : "#2B2D31"}
                 _light={
@@ -99,6 +115,7 @@ const MyChat = ({ fetchAgain }) => {
                 display="flex"
                 alignItems="center"
                 transition="ease 0.1s"
+                position="relative"
               >
                 <Avatar
                   size="md"
@@ -121,6 +138,51 @@ const MyChat = ({ fetchAgain }) => {
                         ? chatData.latestMessage.content.substring(0, 11) +
                           "..."
                         : chatData.latestMessage.content}
+                    </Text>
+                  )}
+                </Box>
+
+                <Box position="absolute" right={3}>
+                  {isToday(
+                    new Date(),
+                    new Date(chatData.latestMessage?.createdAt)
+                  ) ? (
+                    <Text fontSize="xs" color="#949494">
+                      {moment(chatData.latestMessage?.createdAt)
+                        .toDate()
+                        .toLocaleString()
+                        .match(timeRegex)}
+                    </Text>
+                  ) : (
+                    <Text fontSize="xs" color="#949494">
+                      {moment(chatData.latestMessage?.createdAt)
+                        .toDate()
+                        .toLocaleString()
+                        .match(dateRegex)}
+                    </Text>
+                  )}
+                </Box>
+                <Box position="absolute" right={3} bottom={2}>
+                  {notification?.find((n) => n.chat._id === chatData._id) ? (
+                    <Text
+                      fontSize="xs"
+                      bg="#44AD53"
+                      borderRadius="full"
+                      minW="18px"
+                      px={1}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      color="white"
+                    >
+                      {
+                        notification.filter((n) => n.chat._id === chatData._id)
+                          .length
+                      }
+                    </Text>
+                  ) : (
+                    <Text color="transparent" fontSize="xs">
+                      0
                     </Text>
                   )}
                 </Box>
