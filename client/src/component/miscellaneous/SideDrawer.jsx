@@ -179,6 +179,7 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
               {notification.length > 0 && (
                 <Box
                   position="absolute"
+                  minW="18px"
                   top="3px"
                   left="3px"
                   bg="red"
