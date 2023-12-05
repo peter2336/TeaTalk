@@ -142,7 +142,7 @@ const MyChat = ({ fetchAgain }) => {
                   )}
                 </Box>
 
-                <Box position="absolute" right={3}>
+                <Box position="absolute" right={3} top={2}>
                   {isToday(
                     new Date(),
                     new Date(chatData.latestMessage?.createdAt)
