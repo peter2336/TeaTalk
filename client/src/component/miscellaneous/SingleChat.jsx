@@ -28,7 +28,7 @@ import ProfileModal from "./ProfileModal";
 import axios from "axios";
 import ScrollableChat from "./ScrollableChat";
 import { io } from "socket.io-client";
-import { Image, Smile } from "lucide-react";
+import { Image, SendHorizontal, Smile } from "lucide-react";
 import EmojiMenu from "./EmojiMenu";
 
 const socket = io("https://teatalk.onrender.com");
@@ -39,11 +39,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     ChatState();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [sendLoading, setSendLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [emojiFilter, setEmojiFilter] = useState("");
+  const [startX, setStartX] = useState("");
+  const [deltaX, setDeltaX] = useState("");
   const toast = useToast();
   const API_URL = "https://teatalk.onrender.com";
 
@@ -121,6 +124,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     if (event.key === "Enter" && newMessage) {
       socket.emit("stop typing", selectedChat._id);
       try {
+        setSendLoading(true);
         setNewMessage(""); //因為requst是aync function 所以不會影響到 為了要enter後趕快消除input value
         const token = JSON.parse(localStorage.getItem("token"));
         const { data } = await axios.post(
@@ -134,8 +138,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         );
         setFetchAgain(!fetchAgain);
         socket.emit("new message", data);
-
         setMessages([...messages, data]);
+        setSendLoading(false);
       } catch (error) {
         toast({
           description: error.message,
@@ -145,6 +149,41 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           position: "bottom",
         });
         console.log(error);
+        setSendLoading(false);
+      }
+    }
+  };
+
+  const clickSend = async (event) => {
+    if (newMessage) {
+      socket.emit("stop typing", selectedChat._id);
+      try {
+        setSendLoading(true);
+        setNewMessage(""); //因為requst是aync function 所以不會影響到 為了要enter後趕快消除input value
+        const token = JSON.parse(localStorage.getItem("token"));
+        const { data } = await axios.post(
+          `${API_URL}/api/message`,
+          { content: newMessage, chatId: selectedChat._id },
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        setFetchAgain(!fetchAgain);
+        socket.emit("new message", data);
+        setMessages([...messages, data]);
+        setSendLoading(false);
+      } catch (error) {
+        toast({
+          description: error.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+        console.log(error);
+        setSendLoading(false);
       }
     }
   };
@@ -332,6 +371,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             borderRadius="lg"
             overflowY="hidden"
             overflowX="hidden"
+            onTouchStart={(e) => setStartX(e.touches[0].clientX)}
+            onTouchMove={(e) => {
+              const currentX = e.touches[0].clientX;
+              setDeltaX(currentX - startX);
+              if (deltaX > 150) {
+                setSelectedChat("");
+                setDeltaX("");
+              }
+            }}
           >
             {loading ? (
               <Spinner size="xl" alignSelf="center" margin="auto" />
@@ -436,6 +484,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   </Popover>
                 </InputRightElement>
               </InputGroup>
+              <Button
+                isLoading={sendLoading}
+                mx={2}
+                p={1}
+                colorScheme="messenger"
+                borderRadius="full"
+                onClick={() => clickSend()}
+              >
+                <SendHorizontal size="22px" />
+              </Button>
             </FormControl>
           </Box>
         </>
