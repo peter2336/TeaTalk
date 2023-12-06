@@ -154,7 +154,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
-  const clickSend = async (event) => {
+  const clickSend = async () => {
     if (newMessage) {
       socket.emit("stop typing", selectedChat._id);
       try {
@@ -398,7 +398,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               </Box>
             )}
 
-            <FormControl onKeyDown={sendMessage} isRequired mt={3}>
+            <FormControl
+              onKeyDown={sendMessage}
+              isRequired
+              mt={3}
+              display="flex"
+              alignItems="center"
+            >
               {isTyping ? (
                 <Text position="fixed" bottom="65px" fontSize="sm">
                   {getSender(user, selectedChat.users)}輸入中...
