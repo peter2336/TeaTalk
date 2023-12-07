@@ -495,7 +495,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 mx={2}
                 p={1}
                 colorScheme="messenger"
-                borderRadius="full"
                 onClick={() => clickSend()}
               >
                 <SendHorizontal size="22px" />
