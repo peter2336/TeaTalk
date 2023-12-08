@@ -22,7 +22,14 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { ChatIcon, SearchIcon } from "@chakra-ui/icons";
-import { Bell, Sun, Moon, LogOut, UserSquare } from "lucide-react";
+import {
+  Bell,
+  Sun,
+  Moon,
+  LogOut,
+  UserSquare,
+  MessageSquareDashed,
+} from "lucide-react";
 import React, { useState, useRef } from "react";
 import { ChatState } from "../../context/ChatProvider";
 import ProfileModal from "./ProfileModal";

@@ -29,7 +29,14 @@ import { ChatState } from "../../context/ChatProvider";
 import UserBadgeItem from "./UserBadgeItem";
 import axios from "axios";
 import GroupUserListItem from "./GroupUserListItem";
-import { ChevronRight, Settings, UserPlus, Users, XCircle } from "lucide-react";
+import {
+  ChevronRight,
+  PenSquare,
+  Settings,
+  UserPlus,
+  Users,
+  XCircle,
+} from "lucide-react";
 import ManageUserListItem from "./ManageUserListItem";
 
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
