@@ -307,6 +307,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       {selectedChat ? (
         <>
           <Box
+            p={3}
             pb={3}
             px={2}
             w="100%"
@@ -367,13 +368,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             )}
           </Box>
 
-          <Divider />
+          <Box w="100%" px={3}>
+            <Divider />
+          </Box>
 
           <Box
             display="flex"
             flexDirection="column"
             justifyContent="flex-end"
-            p={3}
+            p={1}
             bg={"#313338"}
             _light={{ bg: "#FFFFFF" }}
             w="100%"
@@ -416,7 +419,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             <FormControl
               onKeyDown={sendMessage}
               isRequired
-              mt={3}
+              p={3}
+              pb={5}
               display="flex"
               alignItems="center"
             >
@@ -427,7 +431,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               ) : (
                 <></>
               )}
-              <Box p={1}></Box>
+
               <InputGroup>
                 <Input
                   type="text"
@@ -507,7 +511,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               </InputGroup>
               <Button
                 isLoading={sendLoading}
-                mx={2}
+                ml={2}
                 p={1}
                 colorScheme="messenger"
                 onClick={() => clickSend()}

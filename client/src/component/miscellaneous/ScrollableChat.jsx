@@ -350,7 +350,7 @@ const ScrollableChat = ({ messages, showScrollButton }) => {
           onClick={scrollToBottom}
           position="fixed"
           borderRadius="full"
-          right={7}
+          right="16px"
           bottom={20}
           p={1}
         >
