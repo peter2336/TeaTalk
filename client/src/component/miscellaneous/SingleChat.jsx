@@ -301,10 +301,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     setShowScrollButton(!isAtBottom);
   };
 
-  const handleScrollToBottom = () => {
-    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-  };
-
   return (
     <>
       {selectedChat ? (
