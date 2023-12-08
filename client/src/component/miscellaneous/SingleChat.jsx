@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ChatState } from "../../context/ChatProvider";
 import {
   Box,
@@ -48,6 +48,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [startX, setStartX] = useState("");
   const [deltaX, setDeltaX] = useState("");
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const messagesRef = useRef(null);
   const toast = useToast();
   const API_URL = "https://teatalk.onrender.com";
 
