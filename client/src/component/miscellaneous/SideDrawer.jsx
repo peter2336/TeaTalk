@@ -170,7 +170,7 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
           </Button>
         </Tooltip>
 
-        <Menu>
+        <Menu autoSelect={false}>
           <Tooltip label="訊息通知" hasArrow placement="right">
             <MenuButton
               as={Button}
@@ -183,12 +183,11 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
               {notification.length > 0 && (
                 <Box
                   position="absolute"
-                  w="18px"
                   top="3px"
                   left="3px"
                   bg="red"
                   borderRadius="full"
-                  px={1}
+                  w="18px"
                   fontSize="xs"
                   color="white"
                 >
@@ -201,7 +200,11 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
             </MenuButton>
           </Tooltip>
           <MenuList>
-            {!notification.length && <MenuItem>目前沒有新的訊息</MenuItem>}
+            {!notification.length && (
+              <MenuItem icon={<MessageSquareDashed size="20px" />}>
+                目前沒有新的訊息
+              </MenuItem>
+            )}
             {notification.map((msg) => (
               <MenuItem
                 key={msg._id}
@@ -211,10 +214,17 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
                     notification.filter((n) => n.chat._id !== msg.chat._id)
                   );
                 }}
+                icon={
+                  <Avatar
+                    name={msg.chat.chatName}
+                    src={msg.chat.pic}
+                    size="sm"
+                  />
+                }
               >
                 {msg.chat.isGroupChat
-                  ? `${msg.chat.chatName}有新訊息`
-                  : `${getSender(user, msg.chat.users)}有新訊息`}
+                  ? `${msg.chat.chatName} 有新訊息`
+                  : `${getSender(user, msg.chat.users)} 有新訊息`}
               </MenuItem>
             ))}
           </MenuList>
@@ -263,7 +273,7 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
                 setFetchAgain={setFetchAgain}
               >
                 <MenuItem
-                  icon={<UserSquare size="12.8px" />}
+                  icon={<UserSquare size="20px" />}
                   transition="ease all 0.1s"
                 >
                   個人資料
@@ -271,7 +281,7 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
               </ProfileModal>
               <MenuDivider />
               <MenuItem
-                icon={<LogOut size="12.8px" />}
+                icon={<LogOut size="20px" />}
                 onClick={logoutHandler}
                 transition="ease all 0.1s"
               >

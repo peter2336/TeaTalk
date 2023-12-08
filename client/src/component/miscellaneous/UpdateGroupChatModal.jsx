@@ -378,21 +378,21 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
               </MenuButton>
               <MenuList>
                 <MenuItem
-                  icon={<EditIcon />}
+                  icon={<PenSquare size="20px" />}
                   transition="ease all 0.1s"
                   onClick={onEditOpen}
                 >
                   編輯群組
                 </MenuItem>
                 <MenuItem
-                  icon={<Users size="12.8px" />}
+                  icon={<Users size="20px" />}
                   transition="ease all 0.1s"
                   onClick={onManageOpen}
                 >
                   成員管理
                 </MenuItem>
                 <MenuItem
-                  icon={<UserPlus size="12.8px" />}
+                  icon={<UserPlus size="20px" />}
                   transition="ease all 0.1s"
                   onClick={onInviteOpen}
                 >
@@ -400,7 +400,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                 </MenuItem>
                 <MenuDivider />
                 <MenuItem
-                  icon={<XCircle size="12.8px" />}
+                  icon={<XCircle size="20px" />}
                   color="#B86B5E"
                   transition="ease all 0.1s"
                   onClick={() => handleRemove(user)}
