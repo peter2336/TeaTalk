@@ -5,10 +5,19 @@ import {
   isSameSenderMargin,
   isSameUser,
 } from "../../config/ChatLogic";
-import { Avatar, Box, Image, Link, Text, Tooltip } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Image,
+  Link,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
+import { ArrowDownIcon } from "@chakra-ui/icons";
 import moment from "moment";
 
-const ScrollableChat = ({ messages }) => {
+const ScrollableChat = ({ messages, showScrollButton }) => {
   const { user } = ChatState();
   const boxRef = useRef(null);
   const urlRegex =
@@ -31,6 +40,14 @@ const ScrollableChat = ({ messages }) => {
       inline: "nearest",
     });
   }, [messages]);
+
+  const scrollToBottom = () => {
+    boxRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
+  };
 
   return (
     <Box ref={boxRef}>
@@ -109,7 +126,7 @@ const ScrollableChat = ({ messages }) => {
                       //image要加高度scrolltoview才不會出問題
                       h="200px"
                       style={{
-                        maxWidth: "60%",
+                        maxWidth: "75%",
                       }}
                       borderRadius="15px"
                       src={m.content}
@@ -122,7 +139,7 @@ const ScrollableChat = ({ messages }) => {
                       //image要加高度scrolltoview才不會出問題
                       h="200px"
                       style={{
-                        maxWidth: "60%",
+                        maxWidth: "75%",
                         marginLeft: isSameSenderMargin(
                           messages,
                           m,
@@ -324,6 +341,22 @@ const ScrollableChat = ({ messages }) => {
             </div>
           ))}
       </>
+      {showScrollButton && (
+        <Button
+          bg="#5E5E5E"
+          _hover={{ bg: "#525458" }}
+          _light={{ bg: "#EDF2F7", _hover: { bg: "#E2E8F0" } }}
+          opacity="90%"
+          onClick={scrollToBottom}
+          position="fixed"
+          borderRadius="full"
+          right={7}
+          bottom={20}
+          p={1}
+        >
+          <ArrowDownIcon />
+        </Button>
+      )}
     </Box>
   );
 };

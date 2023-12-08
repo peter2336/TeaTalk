@@ -52,14 +52,14 @@ const MyChat = ({ fetchAgain }) => {
 
   return (
     <Box
-      display={{ base: selectedChat ? "none" : "flex", lg: "flex" }}
+      display={{ base: selectedChat ? "none" : "flex", md: "flex", lg: "flex" }}
       flexDirection="column"
       alignItems="center"
       p={3}
       bg="#2B2D31"
       _light={{ bg: "#F2F3F5" }}
       w={{ base: "100%", md: "31%" }}
-      minWidth="240px"
+      minWidth="300px"
       borderWidth="0px"
     >
       <Box
@@ -129,7 +129,7 @@ const MyChat = ({ fetchAgain }) => {
                   <Text>
                     {chatData.isGroupChat == false && loggedUser
                       ? getSender(loggedUser, chatData.users)
-                      : chatData.chatName}
+                      : `${chatData.chatName} (${chatData.users.length})`}
                   </Text>
                   {chatData.latestMessage && (
                     <Text fontSize="xs" color="#949494">

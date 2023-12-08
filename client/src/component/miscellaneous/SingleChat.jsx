@@ -47,6 +47,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [emojiFilter, setEmojiFilter] = useState("");
   const [startX, setStartX] = useState("");
   const [deltaX, setDeltaX] = useState("");
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const toast = useToast();
   const API_URL = "https://teatalk.onrender.com";
 
@@ -292,6 +293,18 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
+  const handleScroll = () => {
+    const isAtBottom =
+      messagesRef.current.scrollHeight - messagesRef.current.scrollTop - 1 <=
+      messagesRef.current.clientHeight;
+
+    setShowScrollButton(!isAtBottom);
+  };
+
+  const handleScrollToBottom = () => {
+    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+  };
+
   return (
     <>
       {selectedChat ? (
@@ -319,7 +332,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               <>
                 {
                   <Text
-                    fontSize={{ base: "18px", md: "20px" }}
+                    fontSize="20px"
                     px={3}
                     w="100%"
                     display="flex"
@@ -338,14 +351,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               <>
                 {
                   <Text
-                    fontSize={{ base: "18px", md: "20px" }}
+                    fontSize="20px"
                     px={3}
                     w="100%"
                     display="flex"
                     alignItems="center"
                     userSelect="none"
                   >
-                    {selectedChat.chatName}
+                    {`${selectedChat.chatName} (${selectedChat.users.length})`}
                   </Text>
                 }
                 <UpdateGroupChatModal
@@ -393,8 +406,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 display="flex"
                 flexDirection="column"
                 overflowY="scroll"
+                ref={messagesRef}
+                onScroll={handleScroll}
               >
-                <ScrollableChat messages={messages} />
+                <ScrollableChat
+                  messages={messages}
+                  showScrollButton={showScrollButton}
+                />
               </Box>
             )}
 

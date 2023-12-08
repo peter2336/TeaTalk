@@ -26,6 +26,11 @@
   width: 8px;
 }
 
+/*scroll寬為8px 平衡左邊8px置中*/
+.chatLog {
+  margin-left: 8px;
+}
+
 .chatLog::-webkit-scrollbar-button {
   width: 0;
   height: 0;

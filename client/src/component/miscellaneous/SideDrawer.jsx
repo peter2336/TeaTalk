@@ -142,7 +142,11 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
   return (
     <>
       <Box
-        display={{ base: selectedChat ? "none" : "flex", lg: "flex" }}
+        display={{
+          base: selectedChat ? "none" : "flex",
+          md: "flex",
+          lg: "flex",
+        }}
         flexDirection="column"
         alignItems="center"
         bg="#1E1F22"
@@ -179,7 +183,7 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
               {notification.length > 0 && (
                 <Box
                   position="absolute"
-                  minW="18px"
+                  w="18px"
                   top="3px"
                   left="3px"
                   bg="red"
