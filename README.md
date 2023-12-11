@@ -10,9 +10,25 @@ Website URL ： [TeaTalk](https://teatalk.onrender.com/)
 
 ## Features
 
-- **Real-Time Communication:** Enjoy instant messaging with friends and colleagues.
-- **User-Friendly Interface:** Navigate the platform effortlessly with our intuitive design.
-- **Customizable Settings:** Tailor your chat experience to suit your preferences.
-- **Secure and Private:** Rest assured that your conversations are kept confidential.
+- **A MERN full stack project (MongoDB + Express.js + React.js + Node.js)**
+- **User authentication (Login/Register/Logout) and authorization (Post/Edit)**
+- **Real-Time Communication (Socket.IO)**
+- **Responsive web design (RWD)**
+- **RESTful API**
 
-**Get brewing and start chatting with TeaTalk today!**
+## Core Tools and Technologies
+
+### Frontend
+
+- **Axios**
+- **React.js**
+
+### Backend
+
+- **Node.js**
+- **Express.js**
+- **MongoDB**
+
+Check package.json file for more information.
+
+## **Get brewing and start chatting with TeaTalk today!**
