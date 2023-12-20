@@ -21,14 +21,16 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { ChatIcon, SearchIcon } from "@chakra-ui/icons";
+
 import {
   Bell,
   Sun,
   Moon,
   LogOut,
   UserSquare,
-  MessageSquareDashed,
+  Search,
+  MessageCircleMore,
+  MessageCircleDashed,
 } from "lucide-react";
 import React, { useState, useRef } from "react";
 import { ChatState } from "../../context/ChatProvider";
@@ -169,17 +171,21 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
             variant="unstyled"
             ref={btnRef}
             onClick={onOpen}
+            onFocus={(e) => e.preventDefault()}
             _hover={{ color: "#a1a1aa" }}
             w="48px"
             h="48px"
           >
-            <SearchIcon />
+            <Box justifyContent="center" display="flex">
+              <Search size="20px" />
+            </Box>
           </Button>
         </Tooltip>
 
         <Menu autoSelect={false}>
           <Tooltip label="訊息通知" hasArrow placement="right">
             <MenuButton
+              onFocus={(e) => e.preventDefault()}
               as={Button}
               variant="unstyled"
               position="relative"
@@ -206,9 +212,12 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
               </Box>
             </MenuButton>
           </Tooltip>
-          <MenuList>
+          <MenuList _dark={{ bg: "#313338" }}>
             {!notification.length && (
-              <MenuItem icon={<MessageSquareDashed size="20px" />}>
+              <MenuItem
+                icon={<MessageCircleDashed size="20px" />}
+                _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
+              >
                 目前沒有新的訊息
               </MenuItem>
             )}
@@ -240,13 +249,14 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
         <GroupChatModal>
           <Tooltip label="建立群組" hasArrow placement="right">
             <Button
+              onFocus={(e) => e.preventDefault()}
               variant="unstyled"
               _hover={{ color: "#a1a1aa" }}
               display="flex"
               w="48px"
               h="48px"
             >
-              <ChatIcon />
+              <MessageCircleMore size="20px" />
             </Button>
           </Tooltip>
         </GroupChatModal>
@@ -273,13 +283,14 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
               variant="unstyled"
             />
 
-            <MenuList>
+            <MenuList _dark={{ bg: "#313338" }}>
               <ProfileModal
                 user={user}
                 fetchAgain={fetchAgain}
                 setFetchAgain={setFetchAgain}
               >
                 <MenuItem
+                  _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
                   icon={<UserSquare size="20px" />}
                   transition="ease all 0.1s"
                 >
@@ -288,6 +299,7 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
               </ProfileModal>
               <MenuDivider />
               <MenuItem
+                _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
                 icon={<LogOut size="20px" />}
                 onClick={logoutHandler}
                 transition="ease all 0.1s"
@@ -301,8 +313,17 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
 
       <Drawer placement="left" onClose={handleClose} isOpen={isOpen}>
         <DrawerOverlay />
-        <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px">搜尋用戶</DrawerHeader>
+        <DrawerContent _dark={{ bg: "#313338" }}>
+          <DrawerHeader
+            display="flex"
+            alignItems="center"
+            borderBottomWidth="1px"
+            fontWeight="normal"
+            userSelect="none"
+            h="54px"
+          >
+            搜尋用戶
+          </DrawerHeader>
           <DrawerBody>
             <Box display="flex" paddingBottom={2}>
               <Input
@@ -313,11 +334,16 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
                 variant="unstyled"
                 h="40px"
                 p={3}
-                bg="#232A37"
+                bg="#3B3C42"
                 _light={{ bg: "#E7E7E9" }}
               />
-              <Button onClick={searchHandler} isLoading={loading}>
-                <SearchIcon />
+              <Button
+                onClick={searchHandler}
+                isLoading={loading}
+                p={1}
+                colorScheme="blue"
+              >
+                <Search size="20px" />
               </Button>
             </Box>
             {loading ? (

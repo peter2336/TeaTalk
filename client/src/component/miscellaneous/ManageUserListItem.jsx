@@ -7,7 +7,7 @@ import { CloseIcon } from "@chakra-ui/icons";
 const ManageUserListItem = ({ user, handleFunction }) => {
   return (
     <Box
-      bg="#2D3748"
+      bg="#313338"
       _light={{ bg: "white" }}
       w="100%"
       display="flex"

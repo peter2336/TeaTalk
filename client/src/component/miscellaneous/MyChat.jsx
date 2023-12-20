@@ -100,7 +100,7 @@ const MyChat = ({ fetchAgain }) => {
                 bg={selectedChat?._id === chatData._id ? "#3F3F46" : "#2B2D31"}
                 _light={
                   selectedChat?._id === chatData._id
-                    ? { bg: "#CFCFD2" }
+                    ? { bg: "#E0E1E5" }
                     : { bg: "#F2F3F5" }
                 }
                 px={3}
@@ -109,7 +109,7 @@ const MyChat = ({ fetchAgain }) => {
                 key={chatData._id}
                 _hover={{
                   bg: "#3F3F46",
-                  _light: { _hover: { bg: "#CFCFD2" } },
+                  _light: { _hover: { bg: "#E0E1E5" } },
                 }}
                 h="58px"
                 display="flex"
@@ -141,7 +141,6 @@ const MyChat = ({ fetchAgain }) => {
                     </Text>
                   )}
                 </Box>
-
                 <Box position="absolute" right={3} top={2}>
                   {!chatData.hasOwnProperty("latestMessage") ? (
                     <></>

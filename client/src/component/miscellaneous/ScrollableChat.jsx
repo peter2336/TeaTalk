@@ -11,15 +11,25 @@ import {
   Button,
   Image,
   Link,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Text,
   Tooltip,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { ArrowDownIcon } from "@chakra-ui/icons";
 import moment from "moment";
 
 const ScrollableChat = ({ messages, showScrollButton }) => {
   const { user } = ChatState();
+  const [profileData, setProfileData] = useState("");
   const boxRef = useRef(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const urlRegex =
     /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
@@ -89,15 +99,21 @@ const ScrollableChat = ({ messages, showScrollButton }) => {
                 key={m._id}
               >
                 {m.sender._id !== user._id && (
-                  <Tooltip label={m.sender.name} placement="bottom" hasArrow>
-                    <Avatar
-                      mr={1}
-                      size="sm"
-                      cursor="pointer"
-                      name={m.sender.name}
-                      src={m.sender.pic}
-                    />
-                  </Tooltip>
+                  <>
+                    <Tooltip label={m.sender.name} placement="bottom" hasArrow>
+                      <Avatar
+                        mr={1}
+                        size="sm"
+                        cursor="pointer"
+                        name={m.sender.name}
+                        src={m.sender.pic}
+                        onClick={() => {
+                          setProfileData(m);
+                          onOpen();
+                        }}
+                      />
+                    </Tooltip>
+                  </>
                 )}
 
                 {imgRegex.test(m.content) &&
@@ -340,8 +356,43 @@ const ScrollableChat = ({ messages, showScrollButton }) => {
               </div>
             </div>
           ))}
+
+        <Modal size="xs" isOpen={isOpen} onClose={onClose} isCentered>
+          <ModalOverlay />
+          <ModalContent _dark={{ bg: "#313338" }}>
+            <ModalHeader display="flex" justifyContent="center">
+              {profileData.sender?.name}
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Avatar
+                borderRadius="full"
+                size="2xl"
+                src={profileData.sender?.pic}
+                name={profileData.sender?.name}
+              />
+
+              <br />
+              <Text fontSize="16px" userSelect="none">
+                電子郵件
+              </Text>
+              <Text fontSize="18px">{profileData.sender?.email}</Text>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="blue" onClick={onClose}>
+                關閉
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </>
-      {showScrollButton && (
+      {showScrollButton && messages.length > 0 && (
         <Button
           bg="#5E5E5E"
           _hover={{ bg: "#525458" }}

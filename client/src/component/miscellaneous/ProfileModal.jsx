@@ -159,6 +159,7 @@ const ProfileModal = ({
             display={{ base: "flex" }}
             icon={<UserSquare size="20px" />}
             onClick={onOtherUserOpen}
+            onFocus={(e) => e.preventDefault()}
             variant="unstyled"
             _hover={{ color: "#a1a1aa" }}
             h="20px"
@@ -170,7 +171,7 @@ const ProfileModal = ({
       {user._id === currentUser._id && (
         <Modal size="xs" isOpen={isOpen} onClose={onClose} isCentered>
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent _dark={{ bg: "#313338" }}>
             <ModalHeader display="flex" justifyContent="center">
               {user.name}
             </ModalHeader>
@@ -208,7 +209,7 @@ const ProfileModal = ({
                   isCentered
                 >
                   <ModalOverlay />
-                  <ModalContent>
+                  <ModalContent _dark={{ bg: "#313338" }}>
                     <ModalHeader display="flex" justifyContent="center">
                       編輯個人資料
                     </ModalHeader>
@@ -288,7 +289,7 @@ const ProfileModal = ({
           isCentered
         >
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent _dark={{ bg: "#313338" }}>
             <ModalHeader display="flex" justifyContent="center">
               {otherUser.name}
             </ModalHeader>
@@ -326,7 +327,7 @@ const ProfileModal = ({
       {user._id !== currentUser._id && (
         <Modal size="xs" isOpen={isOpen} onClose={onClose} isCentered>
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent _dark={{ bg: "#313338" }}>
             <ModalHeader display="flex" justifyContent="center">
               {user.name}
             </ModalHeader>

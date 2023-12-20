@@ -323,6 +323,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
           display={{ base: "flex" }}
           icon={<Settings size="20px" />}
           onClick={onOpen}
+          onFocus={(e) => e.preventDefault()}
           variant="unstyled"
           _hover={{ color: "#a1a1aa" }}
           h="20px"
@@ -332,7 +333,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 
       <Modal size="xs" isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent _dark={{ bg: "#313338" }}>
           <ModalHeader display="flex" justifyContent="center">
             {selectedChat.chatName}
           </ModalHeader>
@@ -383,8 +384,9 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
               <MenuButton colorScheme="blue" as={Button}>
                 設定
               </MenuButton>
-              <MenuList>
+              <MenuList _dark={{ bg: "#313338" }}>
                 <MenuItem
+                  _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
                   icon={<PenSquare size="20px" />}
                   transition="ease all 0.1s"
                   onClick={onEditOpen}
@@ -392,6 +394,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                   編輯群組
                 </MenuItem>
                 <MenuItem
+                  _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
                   icon={<Users size="20px" />}
                   transition="ease all 0.1s"
                   onClick={onManageOpen}
@@ -399,6 +402,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                   成員管理
                 </MenuItem>
                 <MenuItem
+                  _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
                   icon={<UserPlus size="20px" />}
                   transition="ease all 0.1s"
                   onClick={onInviteOpen}
@@ -407,6 +411,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                 </MenuItem>
                 <MenuDivider />
                 <MenuItem
+                  _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
                   icon={<XCircle size="20px" />}
                   color="#B86B5E"
                   transition="ease all 0.1s"
@@ -426,7 +431,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                 isCentered
               >
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent _dark={{ bg: "#313338" }}>
                   <ModalHeader display="flex" justifyContent="center">
                     編輯群組
                   </ModalHeader>
@@ -502,7 +507,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                 isCentered
               >
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent _dark={{ bg: "#313338" }}>
                   <ModalHeader display="flex" justifyContent="center">
                     成員管理
                   </ModalHeader>
@@ -517,10 +522,10 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                         _hover: { backgroundColor: "#B7B7B7" },
                       }}
                       _dark={{
-                        bgGradient: "linear(#2D3748, #2D3748)",
-                        _hover: { backgroundColor: "#636F82" },
+                        bgGradient: "linear(#313338, #313338)",
+                        _hover: { backgroundColor: "#616161" },
                       }}
-                      px="4px"
+                      pr="4px"
                     >
                       {selectedChat.users?.map((user) => (
                         <ManageUserListItem
@@ -547,7 +552,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                 isCentered
               >
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent _dark={{ bg: "#313338" }}>
                   <ModalHeader display="flex" justifyContent="center">
                     邀請
                   </ModalHeader>
@@ -557,12 +562,12 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                       <FormLabel fontSize="sm">邀請成員</FormLabel>
                       <Input
                         placeholder="請輸入成員Email"
-                        mb={3}
+                        mb={2}
                         onChange={(e) => handleSearch(e.target.value)}
                         variant="unstyled"
                         h="40px"
                         p={3}
-                        bg="#232A37"
+                        bg="#3B3C42"
                         _light={{ bg: "#E7E7E9" }}
                       />
                     </FormControl>
@@ -576,10 +581,10 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                         _hover: { backgroundColor: "#B7B7B7" },
                       }}
                       _dark={{
-                        bgGradient: "linear(#2D3748, #2D3748)",
-                        _hover: { backgroundColor: "#636F82" },
+                        bgGradient: "linear(#313338, #313338)",
+                        _hover: { backgroundColor: "#616161" },
                       }}
-                      px="4px"
+                      pr="4px"
                     >
                       {loading ? (
                         <></>

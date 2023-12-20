@@ -21,14 +21,13 @@ import {
   Tooltip,
   useToast,
 } from "@chakra-ui/react";
-import { ArrowBackIcon } from "@chakra-ui/icons";
 import UpdateGroupChatModal from "./UpdateGroupChatModal";
 import { getSender, getSenderFull } from "../../config/ChatLogic";
 import ProfileModal from "./ProfileModal";
 import axios from "axios";
 import ScrollableChat from "./ScrollableChat";
 import { io } from "socket.io-client";
-import { Image, SendHorizontal, Smile } from "lucide-react";
+import { ArrowLeft, Image, SendHorizontal, Smile } from "lucide-react";
 import EmojiMenu from "./EmojiMenu";
 
 const socket = io("https://teatalk.onrender.com");
@@ -318,7 +317,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             <Tooltip label="返回" hasArrow placement="bottom">
               <IconButton
                 display={{ base: "flex" }}
-                icon={<ArrowBackIcon />}
+                icon={<ArrowLeft size="20px" />}
                 onClick={() => setSelectedChat("")}
                 variant="unstyled"
                 _hover={{ color: "#a1a1aa" }}
@@ -340,6 +339,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     {getSender(user, selectedChat.users)}
                   </Text>
                 }
+
                 <ProfileModal
                   user={user}
                   otherUser={getSenderFull(user, selectedChat.users)}
@@ -359,6 +359,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     {`${selectedChat.chatName} (${selectedChat.users.length})`}
                   </Text>
                 }
+
                 <UpdateGroupChatModal
                   fetchAgain={fetchAgain}
                   setFetchAgain={setFetchAgain}
@@ -412,6 +413,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <ScrollableChat
                   messages={messages}
                   showScrollButton={showScrollButton}
+                  selectedChat={selectedChat}
                 />
               </Box>
             )}
@@ -481,8 +483,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                         <Smile size="22px" cursor="pointer" />
                       </Box>
                     </PopoverTrigger>
-                    <PopoverContent>
-                      <PopoverArrow />
+                    <PopoverContent _dark={{ bg: "#313338" }}>
                       <PopoverHeader>
                         <Input
                           type="search"
@@ -490,7 +491,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                           variant="unstyled"
                           h="40px"
                           p={3}
-                          bg="#232A37"
+                          bg="#3B3C42"
                           _light={{ bg: "#E7E7E9", opacity: "60%" }}
                           onChange={(e) => setEmojiFilter(e.target.value)}
                           value={emojiFilter}

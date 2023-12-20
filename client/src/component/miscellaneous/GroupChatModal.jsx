@@ -236,7 +236,7 @@ const GroupChatModal = ({ children }) => {
 
       <Modal size="xs" isOpen={isOpen} onClose={handleClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent _dark={{ bg: "#313338" }}>
           <ModalHeader display="flex" justifyContent="center">
             建立群組
           </ModalHeader>
@@ -283,7 +283,7 @@ const GroupChatModal = ({ children }) => {
                 variant="unstyled"
                 h="40px"
                 p={3}
-                bg="#232A37"
+                bg="#3B3C42"
                 _light={{ bg: "#E7E7E9" }}
               />
             </FormControl>
@@ -305,21 +305,22 @@ const GroupChatModal = ({ children }) => {
               isCentered
             >
               <ModalOverlay />
-              <ModalContent>
+              <ModalContent _dark={{ bg: "#313338" }}>
                 <ModalHeader display="flex" justifyContent="center">
                   新增成員
                 </ModalHeader>
+                <ModalCloseButton />
                 <ModalBody>
                   <FormControl>
                     <FormLabel fontSize="sm">新增成員</FormLabel>
                     <Input
                       placeholder="請輸入成員Email"
-                      mb={1}
+                      mb={2}
                       onChange={(e) => searchHandler(e.target.value)}
                       variant="unstyled"
                       h="40px"
                       p={3}
-                      bg="#232A37"
+                      bg="#3B3C42"
                       _light={{ bg: "#E7E7E9" }}
                     />
                   </FormControl>
@@ -333,10 +334,10 @@ const GroupChatModal = ({ children }) => {
                       _hover: { backgroundColor: "#B7B7B7" },
                     }}
                     _dark={{
-                      bgGradient: "linear(#2D3748, #2D3748)",
-                      _hover: { backgroundColor: "#636F82" },
+                      bgGradient: "linear(#313338, #313338)",
+                      _hover: { backgroundColor: "#616161" },
                     }}
-                    px="4px"
+                    pr="4px"
                   >
                     {loading ? (
                       <></>
