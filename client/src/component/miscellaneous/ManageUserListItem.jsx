@@ -3,8 +3,9 @@ import React from "react";
 import { Avatar, Box, Text } from "@chakra-ui/react";
 
 import { CloseIcon } from "@chakra-ui/icons";
+import { ShieldCheck } from "lucide-react";
 
-const ManageUserListItem = ({ user, handleFunction }) => {
+const ManageUserListItem = ({ user, handleFunction, selectedChat }) => {
   return (
     <Box
       bg="#313338"
@@ -28,7 +29,13 @@ const ManageUserListItem = ({ user, handleFunction }) => {
         userSelect="none"
       />
       <Box ml={2} userSelect="none">
-        <Text>{user.name}</Text>
+        <Box display="flex" alignItems="center">
+          <Text mr={1}>{user.name}</Text>
+          {selectedChat.groupAdmin._id === user._id && (
+            <ShieldCheck color="#00A8FC" size="18px" />
+          )}
+        </Box>
+
         <Text fontSize="xs">{user.email}</Text>
       </Box>
       <Box
