@@ -158,13 +158,8 @@ const GroupChatModal = ({ children }) => {
       console.log(data);
 
       setChat([data, ...chat]);
-      onClose();
-      setPic(
-        "https://icon-library.com/images/what-is-the-discord-icon/what-is-the-discord-icon-18.jpg"
-      );
-      setSelectedUsers([]);
-      setSearch("");
-      setSearchResult([]);
+      handleClose();
+      handleClostStep2();
       setLoading(false);
       toast({
         description: "建立完成",
@@ -298,82 +293,82 @@ const GroupChatModal = ({ children }) => {
               下一步
             </Button>
             {/* 建立群組step 2 */}
-            <Modal
-              size="xs"
-              isOpen={isOpenStep2}
-              onClose={handleClostStep2}
-              isCentered
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal
+        size="xs"
+        isOpen={isOpenStep2}
+        onClose={handleClostStep2}
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent _dark={{ bg: "#313338" }}>
+          <ModalHeader display="flex" justifyContent="center">
+            新增成員
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl>
+              <FormLabel fontSize="sm">新增成員</FormLabel>
+              <Input
+                placeholder="請輸入成員Email"
+                mb={2}
+                onChange={(e) => searchHandler(e.target.value)}
+                variant="unstyled"
+                h="40px"
+                p={3}
+                bg="#3B3C42"
+                _light={{ bg: "#E7E7E9" }}
+              />
+            </FormControl>
+
+            <Box
+              h="200px"
+              overflowY="scroll"
+              className="chatLog"
+              _light={{
+                bgGradient: "linear(#FFFFFF, #FFFFFF)",
+                _hover: { backgroundColor: "#B7B7B7" },
+              }}
+              _dark={{
+                bgGradient: "linear(#313338, #313338)",
+                _hover: { backgroundColor: "#616161" },
+              }}
+              pr="4px"
             >
-              <ModalOverlay />
-              <ModalContent _dark={{ bg: "#313338" }}>
-                <ModalHeader display="flex" justifyContent="center">
-                  新增成員
-                </ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <FormControl>
-                    <FormLabel fontSize="sm">新增成員</FormLabel>
-                    <Input
-                      placeholder="請輸入成員Email"
-                      mb={2}
-                      onChange={(e) => searchHandler(e.target.value)}
-                      variant="unstyled"
-                      h="40px"
-                      p={3}
-                      bg="#3B3C42"
-                      _light={{ bg: "#E7E7E9" }}
-                    />
-                  </FormControl>
+              {loading ? (
+                <></>
+              ) : (
+                searchResult?.map((user) => (
+                  <GroupUserListItem
+                    key={user._id}
+                    user={user}
+                    handleFunction={() => groupAddHandler(user)}
+                    selectedUsers={selectedUsers}
+                  />
+                ))
+              )}
+            </Box>
 
-                  <Box
-                    h="200px"
-                    overflowY="scroll"
-                    className="chatLog"
-                    _light={{
-                      bgGradient: "linear(#FFFFFF, #FFFFFF)",
-                      _hover: { backgroundColor: "#B7B7B7" },
-                    }}
-                    _dark={{
-                      bgGradient: "linear(#313338, #313338)",
-                      _hover: { backgroundColor: "#616161" },
-                    }}
-                    pr="4px"
-                  >
-                    {loading ? (
-                      <></>
-                    ) : (
-                      searchResult?.map((user) => (
-                        <GroupUserListItem
-                          key={user._id}
-                          user={user}
-                          handleFunction={() => groupAddHandler(user)}
-                          selectedUsers={selectedUsers}
-                        />
-                      ))
-                    )}
-                  </Box>
-
-                  <Box display="block" minH="38px">
-                    {selectedUsers.map((user) => (
-                      <UserBadgeItem
-                        key={user._id}
-                        user={user}
-                        handleFunction={() => userAddCancel(user)}
-                      />
-                    ))}
-                  </Box>
-                </ModalBody>
-                <ModalFooter>
-                  <Button
-                    colorScheme="whatsapp"
-                    onClick={submitHandler}
-                    isLoading={loading}
-                  >
-                    建立群組
-                  </Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
+            <Box display="block" minH="38px">
+              {selectedUsers.map((user) => (
+                <UserBadgeItem
+                  key={user._id}
+                  user={user}
+                  handleFunction={() => userAddCancel(user)}
+                />
+              ))}
+            </Box>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="whatsapp"
+              onClick={submitHandler}
+              isLoading={loading}
+            >
+              建立群組
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
