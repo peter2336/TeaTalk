@@ -340,6 +340,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   </Text>
                 }
 
+                <SearchChatHistory messages={messages} boxRef={boxRef} />
+
                 <ProfileModal
                   user={user}
                   otherUser={getSenderFull(user, selectedChat.users)}
@@ -359,6 +361,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     {`${selectedChat.chatName} (${selectedChat.users.length})`}
                   </Text>
                 }
+
+                <SearchChatHistory messages={messages} boxRef={boxRef} />
 
                 <UpdateGroupChatModal
                   fetchAgain={fetchAgain}
@@ -414,6 +418,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   messages={messages}
                   showScrollButton={showScrollButton}
                   selectedChat={selectedChat}
+                  boxRef={boxRef}
                 />
               </Box>
             )}
@@ -500,12 +505,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                       <PopoverBody pr={1}>
                         <Box
                           display="flex"
-                          overflowY="scroll"
                           className="chatLog"
                           _light={{
                             bgGradient: "linear(#FFFFFF, #FFFFFF)",
                             _hover: { backgroundColor: "#B7B7B7" },
                           }}
+                          overflowY="scroll"
                           ml="0px"
                         >
                           <EmojiMenu
