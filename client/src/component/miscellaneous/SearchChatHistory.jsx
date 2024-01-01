@@ -31,7 +31,7 @@ const SearchChatHistory = ({ messages, boxRef }) => {
 
   return (
     <>
-      <Popover placement="bottom-end">
+      <Popover placement="bottom-end" onClose={() => setSearch("")}>
         <Tooltip label="搜尋訊息" hasArrow placement="bottom">
           <Box>
             <PopoverTrigger>

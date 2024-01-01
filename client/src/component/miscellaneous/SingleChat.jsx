@@ -477,7 +477,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   </label>
                 </InputLeftElement>
                 <InputRightElement>
-                  <Popover placement="top-start" arrowPadding={0}>
+                  <Popover
+                    placement="top-start"
+                    arrowPadding={0}
+                    onClose={() => setEmojiFilter("")}
+                  >
                     <PopoverTrigger>
                       <Box
                         color="#A1A1AA"
