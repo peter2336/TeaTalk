@@ -31,6 +31,7 @@ import {
   Search,
   MessageCircleMore,
   MessageCircleDashed,
+  UserSearch,
 } from "lucide-react";
 import React, { useState, useRef } from "react";
 import { ChatState } from "../../context/ChatProvider";
@@ -177,7 +178,7 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
             h="48px"
           >
             <Box justifyContent="center" display="flex">
-              <Search size="20px" />
+              <UserSearch size="20px" />
             </Box>
           </Button>
         </Tooltip>

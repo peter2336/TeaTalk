@@ -3,8 +3,8 @@ import HomePage from "./pages/HomePage";
 import ChatPage from "./pages/ChatPage";
 import ChatProvider from "./context/ChatProvider";
 import "./App.css";
-import Login from "./component/Authentication/Login";
-import Singup from "./component/Authentication/Singup";
+import Login from "./component/authentication/Login";
+import Singup from "./component/authentication/Singup";
 
 function App() {
   return (

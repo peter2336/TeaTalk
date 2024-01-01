@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Login from "../component/Authentication/Login";
-import Singup from "../component/Authentication/Singup";
+import Login from "../component/authentication/Login";
+import Singup from "../component/authentication/Singup";
 import {
   Container,
   Box,
