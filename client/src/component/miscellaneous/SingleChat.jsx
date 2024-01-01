@@ -48,7 +48,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [startX, setStartX] = useState("");
   const [deltaX, setDeltaX] = useState("");
   const [showScrollButton, setShowScrollButton] = useState(false);
-  const messagesRef = useRef(null);
+  const messagesRef = useRef([]);
   const boxRef = useRef([]);
   const toast = useToast();
   const API_URL = "https://teatalk.onrender.com";

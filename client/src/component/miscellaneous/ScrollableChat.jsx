@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChatState } from "../../context/ChatProvider";
 import {
   differentDate,
@@ -96,6 +96,7 @@ const ScrollableChat = ({ messages, showScrollButton, boxRef }) => {
                   paddingLeft: "4px",
                 }}
                 key={m._id}
+                id={`message-${m._id}`}
               >
                 {m.sender._id !== user._id && (
                   <>
