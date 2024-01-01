@@ -29,6 +29,7 @@ import ScrollableChat from "./ScrollableChat";
 import { io } from "socket.io-client";
 import { ArrowLeft, Image, SendHorizontal, Smile } from "lucide-react";
 import EmojiMenu from "./EmojiMenu";
+import SearchChatHistory from "./SearchChatHistory";
 
 const socket = io("https://teatalk.onrender.com");
 let selectedChatCompare = {};
