@@ -497,8 +497,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                           value={emojiFilter}
                         />
                       </PopoverHeader>
-                      <PopoverBody>
-                        <Box display="flex">
+                      <PopoverBody pr={1}>
+                        <Box
+                          display="flex"
+                          overflowY="scroll"
+                          className="chatLog"
+                          _light={{
+                            bgGradient: "linear(#FFFFFF, #FFFFFF)",
+                            _hover: { backgroundColor: "#B7B7B7" },
+                          }}
+                          ml="0px"
+                        >
                           <EmojiMenu
                             setNewMessage={setNewMessage}
                             newMessage={newMessage}

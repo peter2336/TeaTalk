@@ -5,7 +5,7 @@ import { Smileys } from "../../emoji/EmojiData";
 const EmojiMenu = ({ setNewMessage, newMessage, emojiFilter }) => {
   const [recentlyUsed, setRecentlyUsed] = useState([]);
   return (
-    <Box h="270px" overflowY="scroll">
+    <Box h="270px">
       {recentlyUsed.length > 0 && (
         <Text fontSize="14px" userSelect="none">
           最近使用
@@ -62,5 +62,3 @@ const EmojiMenu = ({ setNewMessage, newMessage, emojiFilter }) => {
 };
 
 export default EmojiMenu;
-
-//😔😌😴🤮😎😳😭😱😈💩☠️🤡👹👺👻👽👾🤖❤️💔💣💯💢💥👁️‍🗨️💫💦💤🙏
