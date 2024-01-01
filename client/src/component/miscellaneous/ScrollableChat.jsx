@@ -25,10 +25,9 @@ import {
 import { ArrowDownIcon } from "@chakra-ui/icons";
 import moment from "moment";
 
-const ScrollableChat = ({ messages, showScrollButton }) => {
+const ScrollableChat = ({ messages, showScrollButton, boxRef }) => {
   const { user } = ChatState();
   const [profileData, setProfileData] = useState("");
-  const boxRef = useRef(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const urlRegex =
     /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
