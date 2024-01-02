@@ -76,7 +76,7 @@ const SearchChatHistory = ({ messages, boxRef }) => {
               maxH="290px"
               mt={1}
               ml="0px"
-              pr={2}
+              px={1}
             >
               {messages &&
                 search &&
