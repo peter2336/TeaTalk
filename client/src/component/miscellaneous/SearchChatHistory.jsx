@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   IconButton,
   Input,
