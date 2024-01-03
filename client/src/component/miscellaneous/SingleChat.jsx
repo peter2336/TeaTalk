@@ -303,6 +303,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     setShowScrollButton(!isAtBottom);
   };
 
+  const scrollToBottom = () => {
+    boxRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
+  };
+
   return (
     <>
       {selectedChat ? (
@@ -380,6 +388,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           </Box>
 
           <Box
+            position="relative"
             display="flex"
             flexDirection="column"
             justifyContent="flex-end"
@@ -422,6 +431,29 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   selectedChat={selectedChat}
                   boxRef={boxRef}
                 />
+
+                <Box
+                  className="scrollToBottom"
+                  position="absolute"
+                  left="50%"
+                  bottom={20}
+                  display="flex"
+                  justifyContent="center"
+                >
+                  {showScrollButton && messages.length > 0 && (
+                    <Button
+                      bg="#5E5E5E"
+                      _hover={{ bg: "#525458" }}
+                      _light={{ bg: "#EDF2F7", _hover: { bg: "#E2E8F0" } }}
+                      opacity="90%"
+                      onClick={scrollToBottom}
+                      borderRadius="full"
+                      p={1}
+                    >
+                      <ArrowDownIcon size="20px" />
+                    </Button>
+                  )}
+                </Box>
               </Box>
             )}
 

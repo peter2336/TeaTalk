@@ -64,3 +64,7 @@
 .manageUserItem:hover .cancelBtn {
   color: #b7b7b7;
 }
+
+.scrollToBottom {
+  transform: translateX(-50%);
+}

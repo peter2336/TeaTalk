@@ -22,10 +22,9 @@ import {
   Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ArrowDownIcon } from "@chakra-ui/icons";
 import moment from "moment";
 
-const ScrollableChat = ({ messages, showScrollButton, boxRef }) => {
+const ScrollableChat = ({ messages, boxRef }) => {
   const { user } = ChatState();
   const [profileData, setProfileData] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -49,14 +48,6 @@ const ScrollableChat = ({ messages, showScrollButton, boxRef }) => {
       inline: "nearest",
     });
   }, [messages]);
-
-  const scrollToBottom = () => {
-    boxRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-      inline: "nearest",
-    });
-  };
 
   return (
     <Box ref={boxRef}>
@@ -392,22 +383,6 @@ const ScrollableChat = ({ messages, showScrollButton, boxRef }) => {
           </ModalContent>
         </Modal>
       </>
-      {showScrollButton && messages.length > 0 && (
-        <Button
-          bg="#5E5E5E"
-          _hover={{ bg: "#525458" }}
-          _light={{ bg: "#EDF2F7", _hover: { bg: "#E2E8F0" } }}
-          opacity="90%"
-          onClick={scrollToBottom}
-          position="fixed"
-          borderRadius="full"
-          right="16px"
-          bottom={20}
-          p={1}
-        >
-          <ArrowDownIcon />
-        </Button>
-      )}
     </Box>
   );
 };
