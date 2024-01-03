@@ -39,7 +39,7 @@ const SearchChatHistory = ({ messages, boxRef }) => {
     if (element) {
       element.scrollIntoView({
         behavior: "smooth",
-        block: "center",
+        block: "end",
         inline: "nearest",
       });
     }
