@@ -13,9 +13,24 @@ import {
 } from "@chakra-ui/react";
 import { Search } from "lucide-react";
 import React, { useState } from "react";
+import { isToday } from "../../config/ChatLogic";
+import moment from "moment";
 
 const SearchChatHistory = ({ messages, boxRef }) => {
   const [search, setSearch] = useState("");
+
+  const reversedMessages = messages
+    .map((m) => ({
+      chat: m.chat,
+      content: m.content,
+      createdAt: m.createdAt,
+      sender: m.sender,
+      _id: m._id,
+    }))
+    .reverse();
+
+  const timeRegex = /\S{2}\d+\:+\d+/;
+  const dateRegex = /\d+\/\d+\/\d+/;
 
   const scrollToSearch = (m) => {
     const element = boxRef.current.querySelector(`#message-${m._id}`);
@@ -77,26 +92,57 @@ const SearchChatHistory = ({ messages, boxRef }) => {
               mt={1}
               ml="0px"
               px={1}
+              py={1}
             >
               {messages &&
                 search &&
-                messages.map((m, i) => (
+                reversedMessages.map((m, i) => (
                   <Box
                     id={`message-${m._id}`}
                     key={m._id}
-                    display={m.content.includes(search) ? "block" : "none"}
-                    onClick={() => scrollToSearch(m)}
+                    display={m.content.includes(search) ? "flex" : "none"}
+                    alignItems="center"
+                    onClick={() => scrollToSearch(m, i)}
                     cursor="pointer"
                     _hover={{ bg: "#404249" }}
                     _light={{ _hover: { bg: "#EDF2F7" } }}
                     transition="all 0.1s"
                     borderRadius="lg"
-                    py={3}
-                    pl={3}
+                    py={2}
+                    px={3}
+                    position="relative"
                   >
-                    {m.content.length > 38
-                      ? m.content.substring(0, 32) + "..."
-                      : m.content}
+                    <Avatar
+                      mr={2}
+                      size="sm"
+                      name={m.sender.name}
+                      src={m.sender.pic}
+                    />
+                    <Box>
+                      <Text>{m.sender.name}</Text>
+                      <Text fontSize="xs" color="#949494">
+                        {m.content.length > 28
+                          ? m.content.substring(0, 37) + "..."
+                          : m.content}
+                      </Text>
+                    </Box>
+                    <Box position="absolute" right={3} top={2}>
+                      {isToday(new Date(), new Date(m.createdAt)) ? (
+                        <Text fontSize="xs" color="#949494">
+                          {moment(m.createdAt)
+                            .toDate()
+                            .toLocaleString()
+                            .match(timeRegex)}
+                        </Text>
+                      ) : (
+                        <Text fontSize="xs" color="#949494">
+                          {moment(m.createdAt)
+                            .toDate()
+                            .toLocaleString()
+                            .match(dateRegex)}
+                        </Text>
+                      )}
+                    </Box>
                   </Box>
                 ))}
             </Box>

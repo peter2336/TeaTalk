@@ -111,6 +111,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       );
       setMessages(data);
       setLoading(false);
+      setShowScrollButton(false);
       setNotification(
         notification.filter((n) => n.chat._id !== selectedChat._id)
       );
