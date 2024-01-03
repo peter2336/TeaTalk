@@ -27,7 +27,13 @@ import ProfileModal from "./ProfileModal";
 import axios from "axios";
 import ScrollableChat from "./ScrollableChat";
 import { io } from "socket.io-client";
-import { ArrowLeft, Image, SendHorizontal, Smile } from "lucide-react";
+import {
+  ArrowDownIcon,
+  ArrowLeft,
+  Image,
+  SendHorizontal,
+  Smile,
+} from "lucide-react";
 import EmojiMenu from "./EmojiMenu";
 import SearchChatHistory from "./SearchChatHistory";
 
