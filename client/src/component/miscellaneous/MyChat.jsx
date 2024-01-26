@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { ChatState } from "../../context/ChatProvider";
-import { Avatar, Box, Divider, Stack, Text, useToast } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Divider,
+  Img,
+  Stack,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import axios from "axios";
 import { getSender, getSenderPic, isToday } from "../../config/ChatLogic";
 import moment from "moment";
@@ -197,7 +205,15 @@ const MyChat = ({ fetchAgain }) => {
             justifyContent="center"
             fontSize="lg"
             h="100%"
+            flexDirection="column"
+            opacity="50%"
+            _light={{ opacity: "70%" }}
           >
+            <Img
+              src="https://res.cloudinary.com/tea-talk/image/upload/v1706270805/Job_hunt-pana_heb61q.svg"
+              h="30%"
+              alt="Job hunt-pana"
+            />
             搜尋好友開始聊天！
           </Box>
         )}

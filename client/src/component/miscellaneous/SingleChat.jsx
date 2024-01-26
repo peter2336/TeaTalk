@@ -6,12 +6,12 @@ import {
   Divider,
   FormControl,
   IconButton,
+  Img,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
   Popover,
-  PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverHeader,
@@ -588,9 +588,16 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           justifyContent="center"
           h="100%"
           bg={"#313338"}
-          _light={{ bg: "#FFFFFF" }}
+          _light={{ bg: "#FFFFFF", opacity: "70%" }}
           userSelect="none"
+          flexDirection="column"
+          opacity="50%"
         >
+          <Img
+            h="40%"
+            src="https://res.cloudinary.com/tea-talk/image/upload/v1706267925/Connected_world-pana_kdnwwv.svg"
+            alt="Connected world-pana"
+          />
           <Text fontSize="2xl">開始聊天吧 !</Text>
         </Box>
       )}
