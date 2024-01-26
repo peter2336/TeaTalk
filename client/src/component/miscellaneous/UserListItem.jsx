@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Avatar, Box, Text } from "@chakra-ui/react";
+import { UserPlus } from "lucide-react";
 
 const UserListItem = ({ user, handleFunction }) => {
   return (
@@ -29,10 +30,14 @@ const UserListItem = ({ user, handleFunction }) => {
         cursor="pointer"
         name={user.name}
         src={user.pic}
+        userSelect="none"
       />
-      <Box ml={2}>
+      <Box ml={2} userSelect="none">
         <Text>{user.name}</Text>
         <Text fontSize="xs">{user.email}</Text>
+      </Box>
+      <Box p={1} position="absolute" right={1}>
+        <UserPlus size="20px" />
       </Box>
     </Box>
   );

@@ -191,7 +191,15 @@ const MyChat = ({ fetchAgain }) => {
             ))}
           </Stack>
         ) : (
-          <></>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            fontSize="lg"
+            h="100%"
+          >
+            搜尋好友開始聊天！
+          </Box>
         )}
       </Box>
     </Box>
