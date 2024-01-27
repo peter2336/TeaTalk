@@ -32,3 +32,5 @@ Website URL ： [TeaTalk](https://teatalk.onrender.com/)
 Check package.json file for more information.
 
 ## **Get brewing and start chatting with TeaTalk today!**
+
+Web illustrations by [Storyset](https://storyset.com/)
