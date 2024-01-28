@@ -4,6 +4,7 @@ import {
   Button,
   Drawer,
   DrawerBody,
+  DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
@@ -48,6 +49,7 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState();
+  const [selectedUser, setSelectedUser] = useState([]);
   const {
     user,
     selectedChat,
@@ -315,6 +317,7 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
       <Drawer placement="left" onClose={handleClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent _dark={{ bg: "#313338" }}>
+          <DrawerCloseButton mt="2px" />
           <DrawerHeader
             display="flex"
             alignItems="center"
@@ -354,13 +357,15 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
                 <UserListItem
                   key={user._id}
                   user={user}
-                  handleFunction={() => accessChat(user._id, user.pic)}
+                  handleFunction={() => {
+                    accessChat(user._id, user.pic);
+                    setSelectedUser(user);
+                  }}
+                  loadingChat={loadingChat}
+                  selectedUser={selectedUser}
                 />
               ))
             )}
-            <Box w="100%" display="flex" justifyContent="center">
-              {loadingChat && <Spinner display="flex" />}
-            </Box>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

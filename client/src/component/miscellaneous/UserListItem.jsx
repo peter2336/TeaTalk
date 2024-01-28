@@ -1,9 +1,17 @@
 import React from "react";
 
-import { Avatar, Box, Text } from "@chakra-ui/react";
-import { UserPlus } from "lucide-react";
+import { Avatar, Box, Spinner, Text } from "@chakra-ui/react";
+import { UserCheck, UserPlus } from "lucide-react";
+import { ChatState } from "../../context/ChatProvider";
 
-const UserListItem = ({ user, handleFunction }) => {
+const UserListItem = ({ user, handleFunction, loadingChat, selectedUser }) => {
+  const { chat } = ChatState();
+
+  const userCheck = chat
+    .flatMap((c) => c.users)
+    .flatMap((u) => u._id)
+    .includes(user._id);
+
   return (
     <Box
       onClick={handleFunction}
@@ -37,7 +45,13 @@ const UserListItem = ({ user, handleFunction }) => {
         <Text fontSize="xs">{user.email}</Text>
       </Box>
       <Box p={1} position="absolute" right={1}>
-        <UserPlus size="20px" />
+        {loadingChat && selectedUser?._id === user._id ? (
+          <Spinner size="md" display="flex" />
+        ) : userCheck ? (
+          <UserCheck size="20px" color="#06C755" />
+        ) : (
+          <UserPlus size="20px" color="#9F9F9F" />
+        )}
       </Box>
     </Box>
   );
