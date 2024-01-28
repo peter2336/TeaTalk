@@ -10,7 +10,6 @@ import {
   Container,
   Box,
   Text,
-  Link,
   useDisclosure,
   Link as ChakraLink,
   ScaleFade,
@@ -93,6 +92,14 @@ const Singup = () => {
       });
       setLoading(false);
       console.log(error);
+    }
+  };
+
+  //按enter註冊
+  window.onkeydown = function (event) {
+    if (event.keyCode == 13) {
+      submitHandler();
+      event.preventDefault();
     }
   };
 

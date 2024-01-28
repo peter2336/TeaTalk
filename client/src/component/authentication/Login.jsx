@@ -9,11 +9,9 @@ import {
   Text,
   Container,
   Box,
-  Link,
   ScaleFade,
   useDisclosure,
   Link as ChakraLink,
-  LinkProps,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -104,6 +102,14 @@ const Login = () => {
       });
       setLoading(false);
       console.log(error);
+    }
+  };
+
+  //按enter登入
+  window.onkeydown = function (event) {
+    if (event.keyCode == 13) {
+      submitHandler();
+      event.preventDefault();
     }
   };
 

@@ -123,8 +123,7 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
           },
         }
       );
-      console.log(chat);
-      console.log(data);
+
       if (!chat.find((c) => c._id === data._id)) {
         setChat([data, ...chat]);
       }
