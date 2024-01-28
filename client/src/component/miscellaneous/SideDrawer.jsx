@@ -225,6 +225,7 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
             )}
             {notification.map((msg) => (
               <MenuItem
+                _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
                 key={msg._id}
                 onClick={() => {
                   setSelectedChat(msg.chat);
