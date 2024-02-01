@@ -39,26 +39,18 @@ router.post("/", async (req, res) => {
   }
 });
 
-//get all message
-router.get("/:chatId", async (req, res) => {
+//search message
+router.get("/", async (req, res) => {
   try {
-    const messages = await Message.find({ chat: req.params.chatId })
+    let keyword = new RegExp(req.query.search, "i");
+    const messages = await Message.find({
+      content: keyword,
+      chat: req.body.chat,
+    })
       .populate("sender", "name email pic")
       .populate("chat");
-    res.status(200).send(messages);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
-  }
-});
 
-//get unread message
-router.get("/check/unread", async (req, res) => {
-  try {
-    const unreadMessage = await Message.find({ read: false })
-      .populate("sender", "name email pic")
-      .populate("chat");
-    res.status(200).send(unreadMessage);
+    res.status(200).send(messages);
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
@@ -67,14 +59,59 @@ router.get("/check/unread", async (req, res) => {
 
 //read message
 router.patch("/read", async (req, res) => {
-  const { chatId } = req.body;
   try {
-    const readMessage = await Message.updateMany(
-      { chat: chatId, read: false },
-      { read: true },
-      { new: true }
+    await Message.updateMany(
+      { $and: [{ chat: req.body.chat }, { sender: { $ne: req.user._id } }] },
+      {
+        $addToSet: { read: req.user._id }, //如果read中沒有我(沒已讀)才加入
+      }
     );
-    res.status(200).send(readMessage);
+
+    const result = await Message.find({ chat: req.body.chat })
+      .populate("chat")
+      .exec();
+    res.status(200).send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+
+//get unread message
+router.get("/notification", async (req, res) => {
+  try {
+    const inChat = await Chat.find({ users: { $in: [req.user._id] } });
+    const inChatId = inChat.flatMap((c) => c._id);
+    let notification = await Message.find({
+      $and: [
+        { chat: { $in: inChatId } },
+        { read: { $nin: [req.user._id] } },
+        { sender: { $ne: req.user._id } },
+      ],
+    })
+      .populate("sender", "name pic")
+      .populate("chat")
+      .sort({ createdAt: -1 });
+
+    notification = await User.populate(notification, {
+      path: "chat.users",
+      select: "name email pic",
+    });
+
+    res.status(200).send(notification);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+
+//get all message
+router.get("/:chatId", async (req, res) => {
+  try {
+    const messages = await Message.find({ chat: req.params.chatId })
+      .populate("sender", "name email pic")
+      .populate("chat");
+    res.status(200).send(messages);
   } catch (error) {
     console.log(error);
     res.status(400).send(error);

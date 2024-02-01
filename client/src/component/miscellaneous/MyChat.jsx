@@ -22,6 +22,8 @@ const MyChat = ({ fetchAgain }) => {
     setChat,
     notification,
     setNotification,
+    unreadMsg,
+    setUnreadMsg,
   } = ChatState();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
@@ -29,6 +31,25 @@ const MyChat = ({ fetchAgain }) => {
 
   const timeRegex = /\S{2}\d+\:+\d+/;
   const dateRegex = /\d+\/\d+\/\d+/;
+
+  const readMessage = async (chatData) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      await axios.patch(
+        `${API_URL}/api/message/read`,
+        {
+          chat: chatData._id,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchChat = async () => {
     try {
@@ -100,8 +121,12 @@ const MyChat = ({ fetchAgain }) => {
               <Box
                 onClick={() => {
                   setSelectedChat(chatData);
+                  readMessage(chatData);
                   setNotification(
                     notification.filter((n) => n.chat._id !== selectedChat._id)
+                  );
+                  setUnreadMsg(
+                    unreadMsg.filter((n) => n.chat._id !== chatData._id)
                   );
                 }}
                 cursor="pointer"
@@ -184,8 +209,25 @@ const MyChat = ({ fetchAgain }) => {
                       justifyContent="center"
                       color="white"
                     >
+                      {notification.filter((n) => n.chat._id === chatData._id)
+                        .length +
+                        unreadMsg.filter((n) => n.chat._id === chatData._id)
+                          .length}
+                    </Text>
+                  ) : unreadMsg?.find((n) => n.chat._id === chatData._id) ? (
+                    <Text
+                      fontSize="xs"
+                      bg="#44AD53"
+                      borderRadius="full"
+                      minW="18px"
+                      px={1}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      color="white"
+                    >
                       {
-                        notification.filter((n) => n.chat._id === chatData._id)
+                        unreadMsg.filter((n) => n.chat._id === chatData._id)
                           .length
                       }
                     </Text>

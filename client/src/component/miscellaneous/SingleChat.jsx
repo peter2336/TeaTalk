@@ -41,8 +41,15 @@ const socket = io("https://teatalk.onrender.com");
 let selectedChatCompare = {};
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
-  const { user, selectedChat, setSelectedChat, notification, setNotification } =
-    ChatState();
+  const {
+    user,
+    selectedChat,
+    setSelectedChat,
+    notification,
+    setNotification,
+    unreadMsg,
+    setUnreadMsg,
+  } = ChatState();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sendLoading, setSendLoading] = useState(false);
@@ -96,9 +103,30 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         }
       } else {
         setMessages([...messages, newMessageRecieved]);
+        readMessage(selectedChat);
       }
     });
   });
+
+  const readMessage = async (chatData) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      await axios.patch(
+        `${API_URL}/api/message/read`,
+        {
+          chat: chatData._id,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      setUnreadMsg(unreadMsg.filter((n) => n.chat._id !== selectedChat._id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchMessages = async () => {
     if (!selectedChat) return;
@@ -598,7 +626,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             src="https://res.cloudinary.com/tea-talk/image/upload/v1706267925/Connected_world-pana_kdnwwv.svg"
             alt="Connected world-pana"
           />
-          <Text fontSize="2xl">開始聊天吧 !</Text>
+
+          <Text mt={3} fontSize="2xl">
+            開始聊天吧 !
+          </Text>
         </Box>
       )}
     </>

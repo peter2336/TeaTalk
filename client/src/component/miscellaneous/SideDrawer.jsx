@@ -16,13 +16,16 @@ import {
   MenuItem,
   MenuList,
   Popover,
-  Spinner,
+  PopoverBody,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Text,
   Tooltip,
   useColorMode,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-
 import {
   Bell,
   Sun,
@@ -31,18 +34,18 @@ import {
   UserSquare,
   Search,
   MessageCircleMore,
-  MessageCircleDashed,
   UserSearch,
 } from "lucide-react";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ChatState } from "../../context/ChatProvider";
 import ProfileModal from "./ProfileModal";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ChatLoading from "./ChatLoading";
 import UserListItem from "./UserListItem";
-import { getSender } from "../../config/ChatLogic";
+import { getSender, isToday } from "../../config/ChatLogic";
 import GroupChatModal from "./GroupChatModal";
+import moment from "moment";
 
 const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
   const [search, setSearch] = useState("");
@@ -58,6 +61,8 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
     setChat,
     notification,
     setNotification,
+    unreadMsg,
+    setUnreadMsg,
   } = ChatState();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -65,6 +70,38 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
   const toast = useToast();
   const { colorMode, toggleColorMode } = useColorMode();
   const API_URL = "https://teatalk.onrender.com";
+
+  const timeRegex = /\S{2}\d+\:+\d+/;
+  const dateRegex = /\d+\/\d+\/\d+/;
+
+  const unread = async () => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    const { data } = await axios.get(`${API_URL}/api/message/notification`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+    setUnreadMsg(data);
+  };
+
+  const readMessage = async (chatData) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("token"));
+      await axios.patch(
+        `${API_URL}/api/message/read`,
+        {
+          chat: chatData._id,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const logoutHandler = () => {
     localStorage.removeItem("user");
@@ -150,6 +187,10 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
     setSearchResult([]);
   };
 
+  useEffect(() => {
+    unread();
+  }, []);
+
   return (
     <>
       <Box
@@ -184,70 +225,220 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
           </Button>
         </Tooltip>
 
-        <Menu autoSelect={false}>
+        <Popover placement="bottom-end" autoSelect={false}>
           <Tooltip label="訊息通知" hasArrow placement="right">
-            <MenuButton
-              onFocus={(e) => e.preventDefault()}
-              as={Button}
-              variant="unstyled"
-              position="relative"
-              _hover={{ color: "#a1a1aa" }}
-              w="48px"
-              h="48px"
-            >
-              {notification.length > 0 && (
+            <Box>
+              <PopoverTrigger>
                 <Box
-                  position="absolute"
-                  top="3px"
-                  left="3px"
-                  bg="red"
-                  borderRadius="full"
-                  w="18px"
-                  fontSize="xs"
-                  color="white"
+                  onFocus={(e) => e.preventDefault()}
+                  as={Button}
+                  variant="unstyled"
+                  position="relative"
+                  _hover={{ color: "#a1a1aa" }}
+                  w="48px"
+                  h="48px"
                 >
-                  {notification.length}
+                  {!notification.length && !unreadMsg.length ? (
+                    <></>
+                  ) : notification.length ? (
+                    <Box
+                      position="absolute"
+                      top="3px"
+                      left="3px"
+                      bg="red"
+                      borderRadius="full"
+                      w="18px"
+                      fontSize="xs"
+                      color="white"
+                    >
+                      {notification.length + unreadMsg.length}
+                    </Box>
+                  ) : (
+                    <Box
+                      position="absolute"
+                      top="3px"
+                      left="3px"
+                      bg="red"
+                      borderRadius="full"
+                      w="18px"
+                      fontSize="xs"
+                      color="white"
+                    >
+                      {unreadMsg.length}
+                    </Box>
+                  )}
+                  <Box justifyContent="center" display="flex">
+                    <Bell size="20px" />
+                  </Box>
                 </Box>
-              )}
-              <Box justifyContent="center" display="flex">
-                <Bell size="20px" />
-              </Box>
-            </MenuButton>
+              </PopoverTrigger>
+            </Box>
           </Tooltip>
-          <MenuList _dark={{ bg: "#313338" }}>
-            {!notification.length && (
-              <MenuItem
-                icon={<MessageCircleDashed size="20px" />}
-                _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
+          <PopoverContent _dark={{ bg: "#313338" }}>
+            <PopoverHeader fontSize="20px" userSelect="none">
+              訊息通知
+            </PopoverHeader>
+            {!notification.length && !unreadMsg.length && (
+              <PopoverBody
+                _dark={{ bg: "#313338" }}
+                display="flex"
+                alignItems="center"
+                userSelect="none"
               >
-                目前沒有新的訊息
-              </MenuItem>
+                <Box display="flex" alignItems="center">
+                  <Text>目前沒有新的訊息</Text>
+                </Box>
+              </PopoverBody>
             )}
-            {notification.map((msg) => (
-              <MenuItem
-                _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
-                key={msg._id}
-                onClick={() => {
-                  setSelectedChat(msg.chat);
-                  setNotification(
-                    notification.filter((n) => n.chat._id !== msg.chat._id)
-                  );
+            <PopoverBody px="2px">
+              <Box
+                className="chatLog"
+                _light={{
+                  bgGradient: "linear(#FFFFFF, #FFFFFF)",
+                  _hover: { backgroundColor: "#B7B7B7" },
                 }}
-                icon={
-                  <Avatar
-                    name={msg.chat.chatName}
-                    src={msg.chat.pic}
-                    size="sm"
-                  />
-                }
+                overflowY="scroll"
+                maxH="290px"
+                px={1}
               >
-                {msg.chat.isGroupChat
-                  ? `${msg.chat.chatName} 有新訊息`
-                  : `${getSender(user, msg.chat.users)} 有新訊息`}
-              </MenuItem>
-            ))}
-          </MenuList>
-        </Menu>
+                {notification.length > 0 &&
+                  notification?.map((msg) => (
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      cursor="pointer"
+                      py={2}
+                      px={3}
+                      borderRadius="lg"
+                      position="relative"
+                      transition="all 0.1s"
+                      _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
+                      _light={{ _hover: { bg: "#EDF2F7" } }}
+                      key={msg._id}
+                      onClick={() => {
+                        setSelectedChat(msg.chat);
+                        readMessage(msg.chat);
+                        setNotification(
+                          notification.filter(
+                            (n) => n.chat._id !== msg.chat._id
+                          )
+                        );
+                      }}
+                    >
+                      <Avatar
+                        mr={2}
+                        name={
+                          msg.chat.isGroupChat
+                            ? msg.chat.chatName
+                            : msg.sender.name
+                        }
+                        src={
+                          msg.chat.isGroupChat ? msg.chat.pic : msg.sender.pic
+                        }
+                        size="sm"
+                      />
+                      <Box>
+                        <Text>
+                          {msg.chat.isGroupChat
+                            ? `${msg.chat.chatName}`
+                            : `${getSender(user, msg.chat.users)}`}
+                        </Text>
+                        <Text fontSize="xs" color="#949494">
+                          <b>{msg.sender.name} : </b>
+                          {msg.content.length > 28
+                            ? msg.content.substring(0, 31) + "..."
+                            : msg.content}
+                        </Text>
+                      </Box>
+                      <Box position="absolute" right={3} top={2}>
+                        {isToday(new Date(), new Date(msg.createdAt)) ? (
+                          <Text fontSize="xs" color="#949494">
+                            {moment(msg.createdAt)
+                              .toDate()
+                              .toLocaleString()
+                              .match(timeRegex)}
+                          </Text>
+                        ) : (
+                          <Text fontSize="xs" color="#949494">
+                            {moment(msg.createdAt)
+                              .toDate()
+                              .toLocaleString()
+                              .match(dateRegex)}
+                          </Text>
+                        )}
+                      </Box>
+                    </Box>
+                  ))}
+                {unreadMsg.length > 0 &&
+                  unreadMsg?.map((msg) => (
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      cursor="pointer"
+                      py={2}
+                      px={3}
+                      borderRadius="lg"
+                      position="relative"
+                      transition="all 0.1s"
+                      _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
+                      _light={{ _hover: { bg: "#EDF2F7" } }}
+                      key={msg._id}
+                      onClick={() => {
+                        setSelectedChat(msg.chat);
+                        readMessage(msg.chat);
+                        setUnreadMsg(
+                          unreadMsg.filter((n) => n.chat._id !== msg.chat._id)
+                        );
+                      }}
+                    >
+                      <Avatar
+                        mr={2}
+                        name={
+                          msg.chat.isGroupChat
+                            ? msg.chat.chatName
+                            : msg.sender.name
+                        }
+                        src={
+                          msg.chat.isGroupChat ? msg.chat.pic : msg.sender.pic
+                        }
+                        size="sm"
+                      />
+                      <Box>
+                        <Text>
+                          {msg.chat.isGroupChat
+                            ? `${msg.chat.chatName}`
+                            : `${getSender(user, msg.chat.users)}`}
+                        </Text>
+                        <Text fontSize="xs" color="#949494">
+                          <b>{msg.sender.name} : </b>
+                          {msg.content.length > 29
+                            ? msg.content.substring(0, 30) + "..."
+                            : msg.content}
+                        </Text>
+                      </Box>
+                      <Box position="absolute" right={3} top={2}>
+                        {isToday(new Date(), new Date(msg.createdAt)) ? (
+                          <Text fontSize="xs" color="#949494">
+                            {moment(msg.createdAt)
+                              .toDate()
+                              .toLocaleString()
+                              .match(timeRegex)}
+                          </Text>
+                        ) : (
+                          <Text fontSize="xs" color="#949494">
+                            {moment(msg.createdAt)
+                              .toDate()
+                              .toLocaleString()
+                              .match(dateRegex)}
+                          </Text>
+                        )}
+                      </Box>
+                    </Box>
+                  ))}
+              </Box>
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
 
         <GroupChatModal>
           <Tooltip label="建立群組" hasArrow placement="right">
