@@ -104,7 +104,7 @@ const Singup = () => {
   };
 
   return (
-    <Container maxW="lg" centerContent justifyContent="center">
+    <Container maxW="350px" centerContent justifyContent="center">
       <ScaleFade in={onOpen} initialScale={0.5}>
         <Box bg="#313338" w="100%" p="32px" borderRadius="lg">
           <VStack spacing="16px">
@@ -154,8 +154,9 @@ const Singup = () => {
                   bg="#1E1F22"
                   color="white"
                   p={3}
+                  pr="3rem"
                 />
-                <InputRightElement w="52px">
+                <InputRightElement w="3rem">
                   <Button
                     h="1.75rem"
                     size="sm"
@@ -183,8 +184,9 @@ const Singup = () => {
                   bg="#1E1F22"
                   color="white"
                   p={3}
+                  pr="3rem"
                 />
-                <InputRightElement w="52px">
+                <InputRightElement w="3rem">
                   <Button
                     h="1.75rem"
                     size="sm"
