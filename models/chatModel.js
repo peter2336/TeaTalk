@@ -19,7 +19,7 @@ const chatSchema = new mongoose.Schema(
     pic: {
       type: String,
       default:
-        "https://icon-library.com/images/what-is-the-discord-icon/what-is-the-discord-icon-18.jpg",
+        "https://res.cloudinary.com/tea-talk/image/upload/v1708922652/r5b76bwwlow849twxkkp.png",
     },
     latestMessage: {
       type: mongoose.Schema.Types.ObjectId,

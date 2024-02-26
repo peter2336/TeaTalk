@@ -37,7 +37,7 @@ const GroupChatModal = ({ children }) => {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pic, setPic] = useState(
-    "https://icon-library.com/images/what-is-the-discord-icon/what-is-the-discord-icon-18.jpg"
+    "https://res.cloudinary.com/tea-talk/image/upload/v1708922652/r5b76bwwlow849twxkkp.png"
   );
   const toast = useToast();
   const { chat, setChat } = ChatState();
