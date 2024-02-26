@@ -189,8 +189,7 @@ const ProfileModal = ({
                 name={user.name}
               />
 
-              <br />
-              <Text fontSize="16px" userSelect="none">
+              <Text fontSize="16px" userSelect="none" mt={4}>
                 電子郵件
               </Text>
               <Text fontSize="18px">{user.email}</Text>
@@ -248,11 +247,12 @@ const ProfileModal = ({
                           </label>
                         </Box>
                       </Box>
-                      <br />
+
                       <FormControl
                         id="Name"
                         display="flex"
                         flexDirection="column"
+                        mt={4}
                       >
                         <FormLabel fontSize="sm">使用者名稱</FormLabel>
                         <Input
@@ -307,8 +307,7 @@ const ProfileModal = ({
                 name={otherUser.name}
               />
 
-              <br />
-              <Text fontSize="16px" userSelect="none">
+              <Text fontSize="16px" userSelect="none" mt={4}>
                 電子郵件
               </Text>
               <Text fontSize="18px">{otherUser.email}</Text>
@@ -345,8 +344,7 @@ const ProfileModal = ({
                 name={user.name}
               />
 
-              <br />
-              <Text fontSize="16px" userSelect="none">
+              <Text fontSize="16px" userSelect="none" mt={4}>
                 電子郵件
               </Text>
               <Text fontSize="18px">{user.email}</Text>

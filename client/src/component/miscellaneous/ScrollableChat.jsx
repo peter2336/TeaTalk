@@ -368,8 +368,7 @@ const ScrollableChat = ({ messages, boxRef }) => {
                 name={profileData.sender?.name}
               />
 
-              <br />
-              <Text fontSize="16px" userSelect="none">
+              <Text fontSize="16px" userSelect="none" mt={4}>
                 電子郵件
               </Text>
               <Text fontSize="18px">{profileData.sender?.email}</Text>

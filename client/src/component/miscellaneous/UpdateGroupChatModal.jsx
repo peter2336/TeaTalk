@@ -472,11 +472,12 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                         </label>
                       </Box>
                     </Box>
-                    <br />
+
                     <FormControl
                       display="flex"
                       id="groupChatName"
                       flexDirection="column"
+                      mt={4}
                     >
                       <FormLabel fontSize="sm">群組名稱</FormLabel>
                       <Input

@@ -270,8 +270,8 @@ const GroupChatModal = ({ children }) => {
                 </Box>
               </FormControl>
             </Box>
-            <br />
-            <FormControl>
+
+            <FormControl mt={4}>
               <FormLabel fontSize="sm">群組名稱</FormLabel>
               <Input
                 placeholder="群組名稱"
