@@ -539,7 +539,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   height="40px"
                   maxLength="256"
                   isInvalid
-                  autoFocus
                 />
                 <InputLeftElement>
                   <label>
