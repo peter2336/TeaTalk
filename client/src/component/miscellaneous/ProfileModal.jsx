@@ -22,6 +22,7 @@ import {
 import { EditIcon } from "@chakra-ui/icons";
 import { UserSquare } from "lucide-react";
 import axios from "axios";
+import API_URL from "../../apiConfig";
 
 const ProfileModal = ({
   user,
@@ -47,7 +48,6 @@ const ProfileModal = ({
   const [pic, setPic] = useState(user.pic);
   const [name, setName] = useState(user.name);
   const toast = useToast();
-  const API_URL = "https://teatalk.onrender.com";
 
   //上傳圖片
   const postDetails = async (pic) => {

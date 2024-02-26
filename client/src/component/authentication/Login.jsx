@@ -21,6 +21,7 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { X } from "lucide-react";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
+import API_URL from "../../apiConfig";
 
 const Login = () => {
   const { setUser } = ChatState();
@@ -31,7 +32,6 @@ const Login = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const { onOpen } = useDisclosure();
-  const API_URL = "https://teatalk.onrender.com";
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));

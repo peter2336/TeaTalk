@@ -14,6 +14,7 @@ import axios from "axios";
 import moment from "moment";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
+import API_URL from "../../apiConfig";
 
 const MyChat = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
@@ -29,7 +30,6 @@ const MyChat = ({ fetchAgain }) => {
   } = ChatState();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-  const API_URL = "https://teatalk.onrender.com";
 
   const timeRegex = /\S{2}\d+\:+\d+/;
   const dateRegex = /\d+\/\d+\/\d+/;

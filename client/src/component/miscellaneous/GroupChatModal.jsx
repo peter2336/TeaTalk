@@ -23,6 +23,7 @@ import UserBadgeItem from "./UserBadgeItem";
 import axios from "axios";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
+import API_URL from "../../apiConfig";
 
 const GroupChatModal = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -41,7 +42,6 @@ const GroupChatModal = ({ children }) => {
   );
   const toast = useToast();
   const { chat, setChat } = ChatState();
-  const API_URL = "https://teatalk.onrender.com";
 
   //上傳圖片
   const postDetails = (pic) => {

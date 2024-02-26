@@ -38,6 +38,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
+import API_URL from "../../apiConfig";
 
 const socket = io("https://teatalk.onrender.com");
 let selectedChatCompare = {};
@@ -67,7 +68,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const boxRef = useRef([]);
   const simplebarRef = useRef(null);
   const toast = useToast();
-  const API_URL = "https://teatalk.onrender.com";
 
   useEffect(() => {
     socket.on("connect", () => {

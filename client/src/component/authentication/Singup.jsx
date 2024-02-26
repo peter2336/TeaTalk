@@ -20,6 +20,7 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { X } from "lucide-react";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
+import API_URL from "../../apiConfig";
 
 const Singup = () => {
   const [name, setName] = useState("");
@@ -32,7 +33,6 @@ const Singup = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const { onOpen } = useDisclosure();
-  const API_URL = "https://teatalk.onrender.com";
 
   //註冊帳號
   const submitHandler = async () => {

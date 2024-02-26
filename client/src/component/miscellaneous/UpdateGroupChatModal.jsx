@@ -40,6 +40,7 @@ import ManageUserListItem from "./ManageUserListItem";
 import axios from "axios";
 import SimpleBar from "simplebar-react";
 import "simplebar-react/dist/simplebar.min.css";
+import API_URL from "../../apiConfig";
 
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const { user, selectedChat, setSelectedChat } = ChatState();
@@ -72,7 +73,6 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const [disable, setDisable] = useState(true);
   const [existUser, setExistUser] = useState([]);
   const toast = useToast();
-  const API_URL = "https://teatalk.onrender.com";
 
   //上傳圖片
   const postDetails = async (pic) => {
