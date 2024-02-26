@@ -20,7 +20,6 @@ const ChatPage = () => {
 
   return (
     <>
-      {!user && <div>請先登入</div>}
       <div style={{ width: "100%", height: "100dvh" }}>
         <Box display="flex" w="100%" h="100%">
           {user && (

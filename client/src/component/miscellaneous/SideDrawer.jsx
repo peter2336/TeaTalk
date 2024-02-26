@@ -1,3 +1,7 @@
+import React, { useState, useRef, useEffect } from "react";
+import { ChatState } from "../../context/ChatProvider";
+import { useNavigate } from "react-router-dom";
+import { getSender, isToday } from "../../config/ChatLogic";
 import {
   Avatar,
   Box,
@@ -36,16 +40,14 @@ import {
   MessageCircleMore,
   UserSearch,
 } from "lucide-react";
-import React, { useState, useRef, useEffect } from "react";
-import { ChatState } from "../../context/ChatProvider";
 import ProfileModal from "./ProfileModal";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import ChatLoading from "./ChatLoading";
-import UserListItem from "./UserListItem";
-import { getSender, isToday } from "../../config/ChatLogic";
 import GroupChatModal from "./GroupChatModal";
+import UserListItem from "./UserListItem";
+import ChatLoading from "./ChatLoading";
+import axios from "axios";
 import moment from "moment";
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 
 const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
   const [search, setSearch] = useState("");
@@ -290,152 +292,152 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
                 </Box>
               </PopoverBody>
             )}
-            <PopoverBody px="2px">
-              <Box
-                className="chatLog"
-                _light={{
-                  bgGradient: "linear(#FFFFFF, #FFFFFF)",
-                  _hover: { backgroundColor: "#B7B7B7" },
-                }}
-                overflowY="scroll"
-                maxH="290px"
-                px={1}
-              >
-                {notification.length > 0 &&
-                  notification?.map((msg) => (
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      cursor="pointer"
-                      py={2}
-                      px={3}
-                      borderRadius="lg"
-                      position="relative"
-                      transition="all 0.1s"
-                      _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
-                      _light={{ _hover: { bg: "#EDF2F7" } }}
-                      key={msg._id}
-                      onClick={() => {
-                        setSelectedChat(msg.chat);
-                        readMessage(msg.chat);
-                        setNotification(
-                          notification.filter(
-                            (n) => n.chat._id !== msg.chat._id
-                          )
-                        );
-                      }}
-                    >
-                      <Avatar
-                        mr={2}
-                        name={
-                          msg.chat.isGroupChat
-                            ? msg.chat.chatName
-                            : msg.sender.name
-                        }
-                        src={
-                          msg.chat.isGroupChat ? msg.chat.pic : msg.sender.pic
-                        }
-                        size="sm"
-                      />
-                      <Box>
-                        <Text>
-                          {msg.chat.isGroupChat
-                            ? `${msg.chat.chatName}`
-                            : `${getSender(user, msg.chat.users)}`}
-                        </Text>
-                        <Text fontSize="xs" color="#949494">
-                          <b>{msg.sender.name} : </b>
-                          {msg.content.length > 28
-                            ? msg.content.substring(0, 31) + "..."
-                            : msg.content}
-                        </Text>
-                      </Box>
-                      <Box position="absolute" right={3} top={2}>
-                        {isToday(new Date(), new Date(msg.createdAt)) ? (
-                          <Text fontSize="xs" color="#949494">
-                            {moment(msg.createdAt)
-                              .toDate()
-                              .toLocaleString()
-                              .match(timeRegex)}
+            <PopoverBody px={0}>
+              <SimpleBar style={{ maxHeight: 270 }}>
+                <Box
+                  _light={{
+                    bgGradient: "linear(#FFFFFF, #FFFFFF)",
+                    _hover: { backgroundColor: "#B7B7B7" },
+                  }}
+                  px={3}
+                  py={1}
+                >
+                  {notification.length > 0 &&
+                    notification?.map((msg) => (
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        cursor="pointer"
+                        py={2}
+                        px={3}
+                        borderRadius="lg"
+                        position="relative"
+                        transition="all 0.1s"
+                        _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
+                        _light={{ _hover: { bg: "#EDF2F7" } }}
+                        key={msg._id}
+                        onClick={() => {
+                          setSelectedChat(msg.chat);
+                          readMessage(msg.chat);
+                          setNotification(
+                            notification.filter(
+                              (n) => n.chat._id !== msg.chat._id
+                            )
+                          );
+                        }}
+                      >
+                        <Avatar
+                          mr={2}
+                          name={
+                            msg.chat.isGroupChat
+                              ? msg.chat.chatName
+                              : msg.sender.name
+                          }
+                          src={
+                            msg.chat.isGroupChat ? msg.chat.pic : msg.sender.pic
+                          }
+                          size="sm"
+                        />
+                        <Box>
+                          <Text>
+                            {msg.chat.isGroupChat
+                              ? `${msg.chat.chatName}`
+                              : `${getSender(user, msg.chat.users)}`}
                           </Text>
-                        ) : (
                           <Text fontSize="xs" color="#949494">
-                            {moment(msg.createdAt)
-                              .toDate()
-                              .toLocaleString()
-                              .match(dateRegex)}
+                            <b>{msg.sender.name} : </b>
+                            {msg.content.length > 28
+                              ? msg.content.substring(0, 31) + "..."
+                              : msg.content}
                           </Text>
-                        )}
+                        </Box>
+                        <Box position="absolute" right={3} top={2}>
+                          {isToday(new Date(), new Date(msg.createdAt)) ? (
+                            <Text fontSize="xs" color="#949494">
+                              {moment(msg.createdAt)
+                                .toDate()
+                                .toLocaleString()
+                                .match(timeRegex)}
+                            </Text>
+                          ) : (
+                            <Text fontSize="xs" color="#949494">
+                              {moment(msg.createdAt)
+                                .toDate()
+                                .toLocaleString()
+                                .match(dateRegex)}
+                            </Text>
+                          )}
+                        </Box>
                       </Box>
-                    </Box>
-                  ))}
-                {unreadMsg.length > 0 &&
-                  unreadMsg?.map((msg) => (
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      cursor="pointer"
-                      py={2}
-                      px={3}
-                      borderRadius="lg"
-                      position="relative"
-                      transition="all 0.1s"
-                      _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
-                      _light={{ _hover: { bg: "#EDF2F7" } }}
-                      key={msg._id}
-                      onClick={() => {
-                        setSelectedChat(msg.chat);
-                        readMessage(msg.chat);
-                        setUnreadMsg(
-                          unreadMsg.filter((n) => n.chat._id !== msg.chat._id)
-                        );
-                      }}
-                    >
-                      <Avatar
-                        mr={2}
-                        name={
-                          msg.chat.isGroupChat
-                            ? msg.chat.chatName
-                            : msg.sender.name
-                        }
-                        src={
-                          msg.chat.isGroupChat ? msg.chat.pic : msg.sender.pic
-                        }
-                        size="sm"
-                      />
-                      <Box>
-                        <Text>
-                          {msg.chat.isGroupChat
-                            ? `${msg.chat.chatName}`
-                            : `${getSender(user, msg.chat.users)}`}
-                        </Text>
-                        <Text fontSize="xs" color="#949494">
-                          <b>{msg.sender.name} : </b>
-                          {msg.content.length > 29
-                            ? msg.content.substring(0, 30) + "..."
-                            : msg.content}
-                        </Text>
-                      </Box>
-                      <Box position="absolute" right={3} top={2}>
-                        {isToday(new Date(), new Date(msg.createdAt)) ? (
+                    ))}
+                  {unreadMsg.length > 0 &&
+                    unreadMsg?.map((msg) => (
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        cursor="pointer"
+                        py={2}
+                        px={3}
+                        borderRadius="lg"
+                        position="relative"
+                        transition="all 0.1s"
+                        _dark={{ bg: "#313338", _hover: { bg: "#404249" } }}
+                        _light={{ _hover: { bg: "#EDF2F7" } }}
+                        key={msg._id}
+                        onClick={() => {
+                          setSelectedChat(msg.chat);
+                          readMessage(msg.chat);
+                          setUnreadMsg(
+                            unreadMsg.filter((n) => n.chat._id !== msg.chat._id)
+                          );
+                        }}
+                      >
+                        <Avatar
+                          mr={2}
+                          name={
+                            msg.chat.isGroupChat
+                              ? msg.chat.chatName
+                              : msg.sender.name
+                          }
+                          src={
+                            msg.chat.isGroupChat ? msg.chat.pic : msg.sender.pic
+                          }
+                          size="sm"
+                        />
+                        <Box>
+                          <Text>
+                            {msg.chat.isGroupChat
+                              ? `${msg.chat.chatName}`
+                              : `${getSender(user, msg.chat.users)}`}
+                          </Text>
                           <Text fontSize="xs" color="#949494">
-                            {moment(msg.createdAt)
-                              .toDate()
-                              .toLocaleString()
-                              .match(timeRegex)}
+                            <b>{msg.sender.name} : </b>
+                            {msg.content.length > 29
+                              ? msg.content.substring(0, 30) + "..."
+                              : msg.content}
                           </Text>
-                        ) : (
-                          <Text fontSize="xs" color="#949494">
-                            {moment(msg.createdAt)
-                              .toDate()
-                              .toLocaleString()
-                              .match(dateRegex)}
-                          </Text>
-                        )}
+                        </Box>
+                        <Box position="absolute" right={3} top={2}>
+                          {isToday(new Date(), new Date(msg.createdAt)) ? (
+                            <Text fontSize="xs" color="#949494">
+                              {moment(msg.createdAt)
+                                .toDate()
+                                .toLocaleString()
+                                .match(timeRegex)}
+                            </Text>
+                          ) : (
+                            <Text fontSize="xs" color="#949494">
+                              {moment(msg.createdAt)
+                                .toDate()
+                                .toLocaleString()
+                                .match(dateRegex)}
+                            </Text>
+                          )}
+                        </Box>
                       </Box>
-                    </Box>
-                  ))}
-              </Box>
+                    ))}
+                </Box>
+              </SimpleBar>
             </PopoverBody>
           </PopoverContent>
         </Popover>
@@ -519,8 +521,8 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
           >
             搜尋用戶
           </DrawerHeader>
-          <DrawerBody>
-            <Box display="flex" paddingBottom={2}>
+          <DrawerHeader userSelect="none" p={2} alignItems="center">
+            <Box display="flex">
               <Input
                 placeholder="請輸入用戶Email"
                 marginRight={2}
@@ -531,6 +533,7 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
                 p={3}
                 bg="#3B3C42"
                 _light={{ bg: "#E7E7E9" }}
+                autoFocus
               />
               <Button
                 onClick={searchHandler}
@@ -541,23 +544,28 @@ const SideDrawer = ({ fetchAgain, setFetchAgain }) => {
                 <Search size="20px" />
               </Button>
             </Box>
-            {loading ? (
-              <ChatLoading />
-            ) : (
-              searchResult?.map((user) => (
-                <UserListItem
-                  key={user._id}
-                  user={user}
-                  handleFunction={() => {
-                    accessChat(user._id, user.pic);
-                    setSelectedUser(user);
-                  }}
-                  loadingChat={loadingChat}
-                  selectedUser={selectedUser}
-                />
-              ))
-            )}
-          </DrawerBody>
+          </DrawerHeader>
+
+          <SimpleBar style={{ maxHeight: "calc(100% - 110px)" }}>
+            <DrawerBody pt={0} px={3}>
+              {loading ? (
+                <ChatLoading />
+              ) : (
+                searchResult?.map((user) => (
+                  <UserListItem
+                    key={user._id}
+                    user={user}
+                    handleFunction={() => {
+                      accessChat(user._id, user.pic);
+                      setSelectedUser(user);
+                    }}
+                    loadingChat={loadingChat}
+                    selectedUser={selectedUser}
+                  />
+                ))
+              )}
+            </DrawerBody>
+          </SimpleBar>
         </DrawerContent>
       </Drawer>
     </>

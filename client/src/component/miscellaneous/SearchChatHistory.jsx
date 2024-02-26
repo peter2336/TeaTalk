@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+import { isToday } from "../../config/ChatLogic";
 import {
   Avatar,
   Box,
@@ -13,9 +15,9 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import { Search } from "lucide-react";
-import React, { useState } from "react";
-import { isToday } from "../../config/ChatLogic";
 import moment from "moment";
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 
 const SearchChatHistory = ({ messages, boxRef }) => {
   const [search, setSearch] = useState("");
@@ -63,7 +65,7 @@ const SearchChatHistory = ({ messages, boxRef }) => {
           </Box>
         </Tooltip>
         <PopoverContent _dark={{ bg: "#313338" }}>
-          <PopoverHeader>
+          <PopoverHeader px={2}>
             <InputGroup>
               <Input
                 type="search"
@@ -78,75 +80,76 @@ const SearchChatHistory = ({ messages, boxRef }) => {
               />
             </InputGroup>
           </PopoverHeader>
-          <PopoverBody pr={1}>
-            <Text fontSize="14px" userSelect="none">
+          <PopoverBody px={0}>
+            <Text px={2} fontSize="14px" userSelect="none">
               搜尋結果
             </Text>
-            <Box
-              className="chatLog"
-              _light={{
-                bgGradient: "linear(#FFFFFF, #FFFFFF)",
-                _hover: { backgroundColor: "#B7B7B7" },
-              }}
-              overflowY="scroll"
-              maxH="290px"
-              mt={1}
-              ml="0px"
-              px={1}
-              py={1}
-            >
-              {messages &&
-                search &&
-                reversedMessages.map((m, i) => (
-                  <Box
-                    id={`message-${m._id}`}
-                    key={m._id}
-                    display={m.content.includes(search) ? "flex" : "none"}
-                    alignItems="center"
-                    onClick={() => scrollToSearch(m, i)}
-                    cursor="pointer"
-                    _hover={{ bg: "#404249" }}
-                    _light={{ _hover: { bg: "#EDF2F7" } }}
-                    transition="all 0.1s"
-                    borderRadius="lg"
-                    py={2}
-                    px={3}
-                    position="relative"
-                  >
-                    <Avatar
-                      mr={2}
-                      size="sm"
-                      name={m.sender.name}
-                      src={m.sender.pic}
-                    />
-                    <Box>
-                      <Text>{m.sender.name}</Text>
-                      <Text fontSize="xs" color="#949494">
-                        {m.content.length > 28
-                          ? m.content.substring(0, 37) + "..."
-                          : m.content}
-                      </Text>
-                    </Box>
-                    <Box position="absolute" right={3} top={2}>
-                      {isToday(new Date(), new Date(m.createdAt)) ? (
+            <SimpleBar style={{ maxHeight: 290 }}>
+              <Box
+                className="chatLog"
+                _light={{
+                  bgGradient: "linear(#FFFFFF, #FFFFFF)",
+                  _hover: { backgroundColor: "#B7B7B7" },
+                }}
+                overflowY="auto"
+                mt={1}
+                ml="0px"
+                px={3}
+                py={1}
+              >
+                {messages &&
+                  search &&
+                  reversedMessages.map((m, i) => (
+                    <Box
+                      id={`message-${m._id}`}
+                      key={m._id}
+                      display={m.content.includes(search) ? "flex" : "none"}
+                      alignItems="center"
+                      onClick={() => scrollToSearch(m, i)}
+                      cursor="pointer"
+                      _hover={{ bg: "#404249" }}
+                      _light={{ _hover: { bg: "#EDF2F7" } }}
+                      transition="all 0.1s"
+                      borderRadius="lg"
+                      py={2}
+                      px={3}
+                      position="relative"
+                    >
+                      <Avatar
+                        mr={2}
+                        size="sm"
+                        name={m.sender.name}
+                        src={m.sender.pic}
+                      />
+                      <Box>
+                        <Text>{m.sender.name}</Text>
                         <Text fontSize="xs" color="#949494">
-                          {moment(m.createdAt)
-                            .toDate()
-                            .toLocaleString()
-                            .match(timeRegex)}
+                          {m.content.length > 28
+                            ? m.content.substring(0, 37) + "..."
+                            : m.content}
                         </Text>
-                      ) : (
-                        <Text fontSize="xs" color="#949494">
-                          {moment(m.createdAt)
-                            .toDate()
-                            .toLocaleString()
-                            .match(dateRegex)}
-                        </Text>
-                      )}
+                      </Box>
+                      <Box position="absolute" right={3} top={2}>
+                        {isToday(new Date(), new Date(m.createdAt)) ? (
+                          <Text fontSize="xs" color="#949494">
+                            {moment(m.createdAt)
+                              .toDate()
+                              .toLocaleString()
+                              .match(timeRegex)}
+                          </Text>
+                        ) : (
+                          <Text fontSize="xs" color="#949494">
+                            {moment(m.createdAt)
+                              .toDate()
+                              .toLocaleString()
+                              .match(dateRegex)}
+                          </Text>
+                        )}
+                      </Box>
                     </Box>
-                  </Box>
-                ))}
-            </Box>
+                  ))}
+              </Box>
+            </SimpleBar>
           </PopoverBody>
         </PopoverContent>
       </Popover>

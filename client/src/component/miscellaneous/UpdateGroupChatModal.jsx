@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+import { ChatState } from "../../context/ChatProvider";
 import { EditIcon } from "@chakra-ui/icons";
 import {
   Avatar,
@@ -24,11 +26,6 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { ChatState } from "../../context/ChatProvider";
-import UserBadgeItem from "./UserBadgeItem";
-import axios from "axios";
-import GroupUserListItem from "./GroupUserListItem";
 import {
   ChevronRight,
   PenSquare,
@@ -37,7 +34,12 @@ import {
   Users,
   XCircle,
 } from "lucide-react";
+import UserBadgeItem from "./UserBadgeItem";
+import GroupUserListItem from "./GroupUserListItem";
 import ManageUserListItem from "./ManageUserListItem";
+import axios from "axios";
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const { user, selectedChat, setSelectedChat } = ChatState();
@@ -349,8 +351,8 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
               src={selectedChat.pic}
               name={selectedChat.chatName}
             />
-            <br />
-            <Text fontSize="16px" userSelect="none">
+
+            <Text fontSize="16px" userSelect="none" mt={4}>
               成員{`(${selectedChat.users?.length})`}
             </Text>
             <Box display="flex" p={3}>
@@ -513,29 +515,30 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                   </ModalHeader>
                   <ModalCloseButton />
                   <ModalBody>
-                    <Box
-                      h="250px"
-                      overflowY="scroll"
-                      className="chatLog"
-                      _light={{
-                        bgGradient: "linear(#FFFFFF, #FFFFFF)",
-                        _hover: { backgroundColor: "#B7B7B7" },
-                      }}
-                      _dark={{
-                        bgGradient: "linear(#313338, #313338)",
-                        _hover: { backgroundColor: "#616161" },
-                      }}
-                      pr="4px"
-                    >
-                      {selectedChat.users?.map((user) => (
-                        <ManageUserListItem
-                          key={user._id}
-                          user={user}
-                          handleFunction={handleRemove}
-                          selectedChat={selectedChat}
-                        />
-                      ))}
-                    </Box>
+                    <SimpleBar style={{ maxHeight: 250 }}>
+                      <Box
+                        h="250px"
+                        className="chatLog"
+                        _light={{
+                          bgGradient: "linear(#FFFFFF, #FFFFFF)",
+                          _hover: { backgroundColor: "#B7B7B7" },
+                        }}
+                        _dark={{
+                          bgGradient: "linear(#313338, #313338)",
+                          _hover: { backgroundColor: "#616161" },
+                        }}
+                        px={3}
+                      >
+                        {selectedChat.users?.map((user) => (
+                          <ManageUserListItem
+                            key={user._id}
+                            user={user}
+                            handleFunction={handleRemove}
+                            selectedChat={selectedChat}
+                          />
+                        ))}
+                      </Box>
+                    </SimpleBar>
                   </ModalBody>
                   <ModalFooter>
                     <Button colorScheme="blue" onClick={onManageClose}>
@@ -573,34 +576,34 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                       />
                     </FormControl>
 
-                    <Box
-                      h="200px"
-                      overflowY="scroll"
-                      className="chatLog"
-                      _light={{
-                        bgGradient: "linear(#FFFFFF, #FFFFFF)",
-                        _hover: { backgroundColor: "#B7B7B7" },
-                      }}
-                      _dark={{
-                        bgGradient: "linear(#313338, #313338)",
-                        _hover: { backgroundColor: "#616161" },
-                      }}
-                      pr="4px"
-                    >
-                      {loading ? (
-                        <></>
-                      ) : (
-                        searchResult?.map((user) => (
-                          <GroupUserListItem
-                            key={user._id}
-                            user={user}
-                            handleFunction={() => groupAddHandler(user)}
-                            selectedUsers={selectedUsers}
-                            existUser={existUser}
-                          />
-                        ))
-                      )}
-                    </Box>
+                    <SimpleBar style={{ maxHeight: 200 }}>
+                      <Box
+                        h="200px"
+                        _light={{
+                          bgGradient: "linear(#FFFFFF, #FFFFFF)",
+                          _hover: { backgroundColor: "#B7B7B7" },
+                        }}
+                        _dark={{
+                          bgGradient: "linear(#313338, #313338)",
+                          _hover: { backgroundColor: "#616161" },
+                        }}
+                        px={3}
+                      >
+                        {loading ? (
+                          <></>
+                        ) : (
+                          searchResult?.map((user) => (
+                            <GroupUserListItem
+                              key={user._id}
+                              user={user}
+                              handleFunction={() => groupAddHandler(user)}
+                              selectedUsers={selectedUsers}
+                              existUser={existUser}
+                            />
+                          ))
+                        )}
+                      </Box>
+                    </SimpleBar>
 
                     <Box display="block" minH="38px">
                       {selectedUsers?.map((user) => (

@@ -21,12 +21,6 @@ import {
   Tooltip,
   useToast,
 } from "@chakra-ui/react";
-import UpdateGroupChatModal from "./UpdateGroupChatModal";
-import { getSender, getSenderFull } from "../../config/ChatLogic";
-import ProfileModal from "./ProfileModal";
-import axios from "axios";
-import ScrollableChat from "./ScrollableChat";
-import { io } from "socket.io-client";
 import {
   ArrowDownIcon,
   ArrowLeft,
@@ -34,8 +28,16 @@ import {
   SendHorizontal,
   Smile,
 } from "lucide-react";
-import EmojiMenu from "./EmojiMenu";
+import { getSender, getSenderFull } from "../../config/ChatLogic";
+import UpdateGroupChatModal from "./UpdateGroupChatModal";
+import ProfileModal from "./ProfileModal";
+import ScrollableChat from "./ScrollableChat";
 import SearchChatHistory from "./SearchChatHistory";
+import EmojiMenu from "./EmojiMenu";
+import axios from "axios";
+import { io } from "socket.io-client";
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 
 const socket = io("https://teatalk.onrender.com");
 let selectedChatCompare = {};
@@ -63,6 +65,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const messagesRef = useRef([]);
   const boxRef = useRef([]);
+  const simplebarRef = useRef(null);
   const toast = useToast();
   const API_URL = "https://teatalk.onrender.com";
 
@@ -107,6 +110,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     });
   });
+
+  useEffect(() => {
+    if (selectedChat) {
+      const simplebarEl = simplebarRef.current.getScrollElement();
+      simplebarEl.addEventListener("scroll", handleScroll);
+
+      return () => {
+        simplebarEl.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [selectedChat, messages]);
 
   const readMessage = async (chatData) => {
     try {
@@ -332,8 +346,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const handleScroll = () => {
     const isAtBottom =
-      messagesRef.current.scrollHeight - messagesRef.current.scrollTop - 1 <=
-      messagesRef.current.clientHeight;
+      simplebarRef.current.contentWrapperEl.scrollHeight -
+        simplebarRef.current.contentWrapperEl.scrollTop -
+        1 <=
+      simplebarRef.current.contentWrapperEl.clientHeight;
 
     setShowScrollButton(!isAtBottom);
   };
@@ -352,8 +368,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         <>
           <Box
             p={3}
-            pb={3}
-            px={2}
             w="100%"
             display="flex"
             alignItems="center"
@@ -418,7 +432,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             )}
           </Box>
 
-          <Box w="100%" px={3}>
+          <Box w="100%">
             <Divider />
           </Box>
 
@@ -427,12 +441,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             display="flex"
             flexDirection="column"
             justifyContent="flex-end"
-            p={1}
             bg={"#313338"}
             _light={{ bg: "#FFFFFF" }}
             w="100%"
             h="100%"
-            borderRadius="lg"
             overflowY="hidden"
             overflowX="hidden"
             onTouchStart={(e) => setStartX(e.touches[0].clientX)}
@@ -448,49 +460,54 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             {loading ? (
               <Spinner size="xl" alignSelf="center" margin="auto" />
             ) : (
-              <Box
-                className="chatLog"
-                _light={{
-                  bgGradient: "linear(#FFFFFF, #FFFFFF)",
-                  _hover: { backgroundColor: "#B7B7B7" },
+              <SimpleBar
+                style={{
+                  maxHeight: "calc(100% - 72px)",
                 }}
-                display="flex"
-                flexDirection="column"
-                overflowY="scroll"
-                ref={messagesRef}
-                onScroll={handleScroll}
+                ref={simplebarRef}
               >
-                <ScrollableChat
-                  messages={messages}
-                  showScrollButton={showScrollButton}
-                  selectedChat={selectedChat}
-                  boxRef={boxRef}
-                />
-
                 <Box
-                  className="scrollToBottom"
-                  position="absolute"
-                  left="50%"
-                  bottom={20}
+                  px={2}
+                  _light={{
+                    bgGradient: "linear(#FFFFFF, #FFFFFF)",
+                    _hover: { backgroundColor: "#B7B7B7" },
+                  }}
                   display="flex"
-                  justifyContent="center"
+                  flexDirection="column"
+                  overflowY="auto"
+                  ref={messagesRef}
                 >
-                  {showScrollButton && messages.length > 0 && (
-                    <Button
-                      bg="#5E5E5E"
-                      _hover={{ bg: "#525458" }}
-                      _light={{ bg: "#EDF2F7", _hover: { bg: "#E2E8F0" } }}
-                      opacity="90%"
-                      onClick={scrollToBottom}
-                      borderRadius="full"
-                      p={1}
-                    >
-                      <ArrowDownIcon size="20px" />
-                    </Button>
-                  )}
+                  <ScrollableChat
+                    messages={messages}
+                    showScrollButton={showScrollButton}
+                    selectedChat={selectedChat}
+                    boxRef={boxRef}
+                  />
                 </Box>
-              </Box>
+              </SimpleBar>
             )}
+            <Box
+              className="scrollToBottom"
+              position="absolute"
+              left="50%"
+              bottom={20}
+              display="flex"
+              justifyContent="center"
+            >
+              {showScrollButton && messages.length > 0 && (
+                <Button
+                  bg="#5E5E5E"
+                  _hover={{ bg: "#525458" }}
+                  _light={{ bg: "#EDF2F7", _hover: { bg: "#E2E8F0" } }}
+                  opacity="90%"
+                  onClick={scrollToBottom}
+                  borderRadius="full"
+                  p={1}
+                >
+                  <ArrowDownIcon size="20px" />
+                </Button>
+              )}
+            </Box>
 
             <FormControl
               onKeyDown={sendMessage}
@@ -522,6 +539,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   height="40px"
                   maxLength="256"
                   isInvalid
+                  autoFocus
                 />
                 <InputLeftElement>
                   <label>
@@ -562,7 +580,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                       </Box>
                     </PopoverTrigger>
                     <PopoverContent _dark={{ bg: "#313338" }}>
-                      <PopoverHeader>
+                      <PopoverHeader px={2}>
                         <Input
                           type="search"
                           placeholder="請搜尋表情符號😄"
@@ -575,23 +593,23 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                           value={emojiFilter}
                         />
                       </PopoverHeader>
-                      <PopoverBody pr={1}>
-                        <Box
-                          display="flex"
-                          className="chatLog"
-                          _light={{
-                            bgGradient: "linear(#FFFFFF, #FFFFFF)",
-                            _hover: { backgroundColor: "#B7B7B7" },
-                          }}
-                          overflowY="scroll"
-                          ml="0px"
-                        >
-                          <EmojiMenu
-                            setNewMessage={setNewMessage}
-                            newMessage={newMessage}
-                            emojiFilter={emojiFilter}
-                          />
-                        </Box>
+                      <PopoverBody px={0}>
+                        <SimpleBar style={{ maxHeight: 270 }}>
+                          <Box
+                            px={2}
+                            display="flex"
+                            _light={{
+                              bgGradient: "linear(#FFFFFF, #FFFFFF)",
+                              _hover: { backgroundColor: "#B7B7B7" },
+                            }}
+                          >
+                            <EmojiMenu
+                              setNewMessage={setNewMessage}
+                              newMessage={newMessage}
+                              emojiFilter={emojiFilter}
+                            />
+                          </Box>
+                        </SimpleBar>
                       </PopoverBody>
                     </PopoverContent>
                   </Popover>
@@ -615,6 +633,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           alignItems="center"
           justifyContent="center"
           h="100%"
+          w="100%"
           bg={"#313338"}
           _light={{ bg: "#FFFFFF", opacity: "70%" }}
           userSelect="none"

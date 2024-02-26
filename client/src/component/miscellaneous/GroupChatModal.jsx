@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ChatState } from "../../context/ChatProvider";
 import {
   useDisclosure,
   Modal,
@@ -16,11 +17,12 @@ import {
   FormLabel,
   Avatar,
 } from "@chakra-ui/react";
-import { ChatState } from "../../context/ChatProvider";
-import axios from "axios";
+import { EditIcon } from "@chakra-ui/icons";
 import GroupUserListItem from "./GroupUserListItem";
 import UserBadgeItem from "./UserBadgeItem";
-import { EditIcon } from "@chakra-ui/icons";
+import axios from "axios";
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 
 const GroupChatModal = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -320,33 +322,33 @@ const GroupChatModal = ({ children }) => {
                     />
                   </FormControl>
 
-                  <Box
-                    h="200px"
-                    overflowY="scroll"
-                    className="chatLog"
-                    _light={{
-                      bgGradient: "linear(#FFFFFF, #FFFFFF)",
-                      _hover: { backgroundColor: "#B7B7B7" },
-                    }}
-                    _dark={{
-                      bgGradient: "linear(#313338, #313338)",
-                      _hover: { backgroundColor: "#616161" },
-                    }}
-                    pr="4px"
-                  >
-                    {loading ? (
-                      <></>
-                    ) : (
-                      searchResult?.map((user) => (
-                        <GroupUserListItem
-                          key={user._id}
-                          user={user}
-                          handleFunction={() => groupAddHandler(user)}
-                          selectedUsers={selectedUsers}
-                        />
-                      ))
-                    )}
-                  </Box>
+                  <SimpleBar style={{ maxHeight: 200 }}>
+                    <Box
+                      h="200px"
+                      _light={{
+                        bgGradient: "linear(#FFFFFF, #FFFFFF)",
+                        _hover: { backgroundColor: "#B7B7B7" },
+                      }}
+                      _dark={{
+                        bgGradient: "linear(#313338, #313338)",
+                        _hover: { backgroundColor: "#616161" },
+                      }}
+                      px={3}
+                    >
+                      {loading ? (
+                        <></>
+                      ) : (
+                        searchResult?.map((user) => (
+                          <GroupUserListItem
+                            key={user._id}
+                            user={user}
+                            handleFunction={() => groupAddHandler(user)}
+                            selectedUsers={selectedUsers}
+                          />
+                        ))
+                      )}
+                    </Box>
+                  </SimpleBar>
 
                   <Box display="block" minH="38px">
                     {selectedUsers.map((user) => (
