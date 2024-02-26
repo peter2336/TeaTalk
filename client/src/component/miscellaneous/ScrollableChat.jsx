@@ -43,7 +43,6 @@ const ScrollableChat = ({ messages, boxRef }) => {
 
   useEffect(() => {
     boxRef.current.scrollIntoView({
-      behavior: "smooth",
       block: "end",
       inline: "nearest",
     });
