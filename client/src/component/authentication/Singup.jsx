@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link as ReactRouterLink } from "react-router-dom";
 import {
   FormControl,
   Input,
@@ -14,18 +16,17 @@ import {
   Link as ChakraLink,
   ScaleFade,
 } from "@chakra-ui/react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { X } from "lucide-react";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const Singup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [pic, setPic] = useState(); //空值
+  const [pic, setPic] = useState();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
@@ -105,6 +106,18 @@ const Singup = () => {
 
   return (
     <Container maxW="350px" centerContent justifyContent="center">
+      <Box
+        position="absolute"
+        top={5}
+        right={5}
+        cursor="pointer"
+        color="#B5BAC1"
+        _hover={{ color: "#FFFFFF" }}
+        transition="all .2s"
+        onClick={() => navigate("/")}
+      >
+        <X />
+      </Box>
       <ScaleFade in={onOpen} initialScale={0.5}>
         <Box bg="#313338" w="100%" p="32px" borderRadius="lg">
           <VStack spacing="16px">
@@ -123,6 +136,7 @@ const Singup = () => {
                 bg="#1E1F22"
                 color="white"
                 p={3}
+                autoFocus
               />
             </FormControl>
 

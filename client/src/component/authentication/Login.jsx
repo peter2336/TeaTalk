@@ -1,3 +1,7 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link as ReactRouterLink } from "react-router-dom";
+import { ChatState } from "../../context/ChatProvider";
 import {
   FormControl,
   Input,
@@ -13,14 +17,13 @@ import {
   useDisclosure,
   Link as ChakraLink,
 } from "@chakra-ui/react";
-import { Link as ReactRouterLink } from "react-router-dom";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { X } from "lucide-react";
 import { useToast } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
+  const { setUser } = ChatState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
@@ -29,6 +32,13 @@ const Login = () => {
   const navigate = useNavigate();
   const { onOpen } = useDisclosure();
   const API_URL = "https://teatalk.onrender.com";
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    setUser(user);
+
+    if (user) navigate("/chat");
+  }, [navigate]);
 
   const submitHandler = async () => {
     setLoading(true);
@@ -115,6 +125,18 @@ const Login = () => {
 
   return (
     <Container maxW="350px" centerContent justifyContent="center">
+      <Box
+        position="absolute"
+        top={5}
+        right={5}
+        cursor="pointer"
+        color="#B5BAC1"
+        _hover={{ color: "#FFFFFF" }}
+        transition="all .2s"
+        onClick={() => navigate("/")}
+      >
+        <X />
+      </Box>
       <ScaleFade in={onOpen} initialScale={0.5}>
         <Box bg="#313338" w="100%" p="32px" borderRadius="lg">
           <VStack spacing="16px">
@@ -134,6 +156,7 @@ const Login = () => {
                 bg="#1E1F22"
                 color="white"
                 p={3}
+                autoFocus
               />
             </FormControl>
 
