@@ -23,11 +23,19 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import moment from "moment";
+import { Download } from "lucide-react";
 
 const ScrollableChat = ({ messages, boxRef }) => {
   const { user } = ChatState();
   const [profileData, setProfileData] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const {
+    isOpen: isImageOpen,
+    onOpen: onImageOpen,
+    onClose: onImageClose,
+  } = useDisclosure();
+
   const urlRegex =
     /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
 
@@ -136,6 +144,11 @@ const ScrollableChat = ({ messages, boxRef }) => {
                       }}
                       borderRadius="15px"
                       src={m.content}
+                      onClick={() => {
+                        setProfileData(m);
+                        onImageOpen();
+                      }}
+                      cursor="pointer"
                     />
                   </>
                 ) : imgRegex.test(m.content) &&
@@ -155,6 +168,11 @@ const ScrollableChat = ({ messages, boxRef }) => {
                       }}
                       borderRadius="15px"
                       src={m.content}
+                      onClick={() => {
+                        setProfileData(m);
+                        onImageOpen();
+                      }}
+                      cursor="pointer"
                     />
                     <Text
                       fontSize="xs"
@@ -377,6 +395,51 @@ const ScrollableChat = ({ messages, boxRef }) => {
               <Button colorScheme="blue" onClick={onClose}>
                 關閉
               </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+
+        <Modal
+          size={{ base: "sm", md: "2xl" }}
+          isOpen={isImageOpen}
+          onClose={onImageClose}
+          isCentered
+        >
+          <ModalOverlay />
+          <ModalContent _dark={{ bg: "#313338" }}>
+            <ModalHeader textAlign="center" userSelect="none">
+              <Text>{profileData.sender?.name}</Text>
+              <Text mt={1} fontSize="xs" fontWeight="normal">
+                {moment(profileData.createdAt).toDate().toLocaleString()}
+              </Text>
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody display="flex" justifyContent="center">
+              <Image
+                maxH="500px"
+                src={profileData?.content}
+                borderRadius="lg"
+              />
+            </ModalBody>
+            <ModalFooter display="flex" justifyContent="center">
+              <Tooltip label="下載圖片" hasArrow placement="bottom">
+                <Box
+                  as="a"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  p={3}
+                  transition="ease .2s"
+                  cursor="pointer"
+                  _hover={{ color: "#a1a1aa" }}
+                  href={profileData.content?.replace(
+                    "/upload/",
+                    "/upload/fl_attachment/"
+                  )}
+                >
+                  <Download size="24px" />
+                </Box>
+              </Tooltip>
             </ModalFooter>
           </ModalContent>
         </Modal>
