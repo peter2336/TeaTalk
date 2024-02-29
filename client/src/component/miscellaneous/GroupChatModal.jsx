@@ -68,7 +68,7 @@ const GroupChatModal = ({ children }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          setPic(data.url.toString());
+          setPic(data.url.replace("http://", "https://"));
           setLoading(false);
         })
         .catch((error) => {

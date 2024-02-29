@@ -324,7 +324,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          sendPic(data.url);
+          sendPic(data.url.replace("http://", "https://"));
           setSendLoading(false);
         })
         .catch((error) => {
