@@ -149,6 +149,7 @@ const ScrollableChat = ({ messages, boxRef }) => {
                         onImageOpen();
                       }}
                       cursor="pointer"
+                      draggable="false"
                     />
                   </>
                 ) : imgRegex.test(m.content) &&
@@ -173,6 +174,7 @@ const ScrollableChat = ({ messages, boxRef }) => {
                         onImageOpen();
                       }}
                       cursor="pointer"
+                      draggable="false"
                     />
                     <Text
                       fontSize="xs"
@@ -419,6 +421,7 @@ const ScrollableChat = ({ messages, boxRef }) => {
                 maxH="500px"
                 src={profileData?.content}
                 borderRadius="lg"
+                draggable="false"
               />
             </ModalBody>
             <ModalFooter display="flex" justifyContent="center">
@@ -436,6 +439,7 @@ const ScrollableChat = ({ messages, boxRef }) => {
                     "/upload/",
                     "/upload/fl_attachment/"
                   )}
+                  draggable="false"
                 >
                   <Download size="24px" />
                 </Box>

@@ -313,6 +313,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
 
     if (pic.type === "image/jpeg" || pic.type === "image/png") {
+      setSendLoading(true);
       const data = new FormData();
       data.append("file", pic);
       data.append("upload_preset", "tea-talk");
@@ -324,12 +325,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         .then((res) => res.json())
         .then((data) => {
           sendPic(data.url);
-          console.log("圖片傳送成功");
-          setLoading(false);
+          setSendLoading(false);
         })
         .catch((error) => {
           console.log(error);
-          setLoading(false);
+          setSendLoading(false);
         });
     } else {
       toast({
@@ -339,7 +339,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         isClosable: true,
         position: "bottom",
       });
-      setLoading(false);
+      setSendLoading(false);
       return;
     }
   };
@@ -456,6 +456,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 setDeltaX("");
               }
             }}
+            onDragOver={(e) => {
+              e.preventDefault();
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              const files = Array.from(e.dataTransfer.files);
+              postDetails(files[0]);
+            }}
           >
             {loading ? (
               <Spinner size="xl" alignSelf="center" margin="auto" />
@@ -546,7 +554,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                       style={{ display: "none" }}
                       type="file"
                       accept="image/*"
-                      onChange={(e) => postDetails(e.target.files[0])}
+                      onChange={(e) => {
+                        postDetails(e.target.files[0]);
+                      }}
                     />
                     <Box
                       color="#A1A1AA"
