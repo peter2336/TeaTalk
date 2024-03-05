@@ -6,7 +6,7 @@ Website URL ： [TeaTalk](https://teatalk.onrender.com/)
 
 ## Demo
 
-![image](https://utfs.io/f/6f4e9ebc-476b-4df9-a0a2-359570113db9-qunzmy.gif)
+![image](https://res.cloudinary.com/tea-talk/image/upload/v1708671993/realtimechat_qqcoru.gif)
 
 ## Features
 
