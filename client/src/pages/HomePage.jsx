@@ -51,7 +51,7 @@ const HomePage = () => {
     <SimpleBar style={{ maxHeight: "100%", width: "100%" }}>
       <Grid
         templateAreas={`"header" "main" "footer"`}
-        gridTemplateRows={"80px 2800px 200px"}
+        gridTemplateRows={"80px 3500px 200px"}
       >
         <GridItem
           bg="#1D2022"
@@ -103,7 +103,7 @@ const HomePage = () => {
           </Box>
 
           <Box
-            bg="#F6F6F6"
+            bg="#FFFFFF"
             h="700px"
             color="#000000"
             display="flex"
@@ -151,7 +151,7 @@ const HomePage = () => {
           </Box>
 
           <Box
-            bg="#FFFFFF"
+            bg="#F6F6F6"
             h="700px"
             color="#000000"
             display="flex"
@@ -193,6 +193,54 @@ const HomePage = () => {
                     borderRadius="md"
                     src="https://res.cloudinary.com/tea-talk/image/upload/v1708671993/realtimechat_qqcoru.gif"
                   />
+                </Box>
+              </Box>
+            </AnimatedBox>
+          </Box>
+
+          <Box
+            bg="#FFFFFF"
+            h="700px"
+            color="#000000"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <AnimatedBox>
+              <Box
+                display={{ base: "block", md: "flex" }}
+                alignItems="center"
+                justifyContent="center"
+                px={10}
+              >
+                <Box textAlign="center" mr={{ md: "10" }}>
+                  <Image
+                    display="inline-block"
+                    boxShadow="2px 2px 2px 1px rgba(0, 0, 0, 0.2)"
+                    mt={{ base: 6, md: 0 }}
+                    alt="groupchat"
+                    w={{ base: "500px", md: "600px" }}
+                    borderRadius="md"
+                    src="https://res.cloudinary.com/tea-talk/image/upload/v1709879699/notification-demo_xu8mia.gif"
+                  />
+                </Box>
+
+                <Box>
+                  <Text
+                    fontSize={{ base: "24px", md: "32px", lg: "40px" }}
+                    fontWeight="bold"
+                    textAlign="center"
+                  >
+                    訊息通知！
+                  </Text>
+                  <Text
+                    color="#777777"
+                    fontSize="20px"
+                    textAlign="center"
+                    mt="24px"
+                  >
+                    對方發送的訊息會立刻通知您，確保不會錯過對方的任何訊息。
+                  </Text>
                 </Box>
               </Box>
             </AnimatedBox>
