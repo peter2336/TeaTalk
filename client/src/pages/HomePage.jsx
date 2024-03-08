@@ -217,7 +217,7 @@ const HomePage = () => {
                   <Image
                     display="inline-block"
                     boxShadow="2px 2px 2px 1px rgba(0, 0, 0, 0.2)"
-                    mt={{ base: 6, md: 0 }}
+                    mb={{ base: 6, md: 0 }}
                     alt="groupchat"
                     w={{ base: "500px", md: "600px" }}
                     borderRadius="md"
