@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,6 +15,7 @@ import {
   AccordionItem,
   AccordionPanel,
   AccordionIcon,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import SimpleBar from "simplebar-react";
 import { useInView } from "react-intersection-observer";
@@ -41,24 +42,45 @@ const AnimatedBox = ({ children }) => {
 const HomePage = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState();
+  const [navbarBg, setNavbarBg] = useState("transparent");
+  const simplebarRef = useRef(null);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     setUser(user);
   }, [navigate]);
 
+  useEffect(() => {
+    const simplebarEl = simplebarRef.current.getScrollElement();
+    simplebarEl.addEventListener("scroll", handleScroll);
+
+    return () => {
+      simplebarEl.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleScroll = () => {
+    if (simplebarRef.current.contentWrapperEl.scrollTop > 1) {
+      setNavbarBg("rgba(39, 43, 46, .95)");
+    } else {
+      setNavbarBg("transparent");
+    }
+  };
+
   return (
-    <SimpleBar style={{ maxHeight: "100%", width: "100%" }}>
-      <Grid
-        templateAreas={`"header" "main" "footer"`}
-        gridTemplateRows={"80px 3500px 200px"}
-      >
+    <SimpleBar style={{ maxHeight: "100%", width: "100%" }} ref={simplebarRef}>
+      <Grid templateAreas={`"header" "main" "footer"`}>
         <GridItem
-          bg="#1D2022"
+          bg={navbarBg}
           area={"header"}
           display="flex"
           justifyContent="center"
           alignItems="center"
+          position="sticky"
+          top={0}
+          transition="all .2s"
+          zIndex={10}
+          h="80px"
         >
           <ChakraLink as={ReactRouterLink} to="/" pr={5}>
             <Image
@@ -84,12 +106,12 @@ const HomePage = () => {
         <GridItem bg="#FFFFFF" area={"main"}>
           <Box
             bg="#1D2022"
-            h="700px"
+            h={{ base: "500px", md: "700px" }}
             color="#FFFFFF"
             display="flex"
             alignItems="center"
             justifyContent="center"
-            px={10}
+            px={5}
           >
             <AnimatedBox>
               <Text fontSize="20px" textAlign="center">
@@ -104,7 +126,7 @@ const HomePage = () => {
 
           <Box
             bg="#FFFFFF"
-            h="700px"
+            h={{ base: "500px", md: "600px" }}
             color="#000000"
             display="flex"
             alignItems="center"
@@ -115,7 +137,7 @@ const HomePage = () => {
                 display={{ base: "block", md: "flex" }}
                 alignItems="center"
                 justifyContent="center"
-                px={10}
+                px={5}
               >
                 <Box textAlign="center" mr={{ md: "10" }}>
                   <Image
@@ -135,7 +157,7 @@ const HomePage = () => {
                     fontWeight="bold"
                     textAlign="center"
                   >
-                    建立與親朋好友的聊天群組！
+                    建立與親朋好友的聊天群組＋
                   </Text>
                   <Text
                     color="#777777"
@@ -152,55 +174,97 @@ const HomePage = () => {
 
           <Box
             bg="#F6F6F6"
-            h="700px"
+            h={{ base: "500px", md: "600px" }}
             color="#000000"
             display="flex"
             alignItems="center"
             justifyContent="center"
           >
             <AnimatedBox>
-              <Box
-                display={{ base: "block", md: "flex" }}
-                alignItems="center"
-                justifyContent="center"
-                px={10}
-              >
-                <Box>
-                  <Text
-                    fontSize={{ base: "24px", md: "32px", lg: "40px" }}
-                    fontWeight="bold"
-                    textAlign="center"
+              {useBreakpointValue({
+                base: (
+                  <Box
+                    display={{ base: "block", md: "flex" }}
+                    alignItems="center"
+                    justifyContent="center"
+                    px={5}
                   >
-                    即時通訊～
-                  </Text>
-                  <Text
-                    color="#777777"
-                    fontSize="20px"
-                    textAlign="center"
-                    mt="24px"
-                  >
-                    您發送的訊息可以零時差傳遞給對方彷彿彼此身處同一空間。
-                  </Text>
-                </Box>
+                    <Box textAlign="center" ml={{ md: "10" }}>
+                      <Image
+                        display="inline-block"
+                        boxShadow="2px 2px 2px 1px rgba(0, 0, 0, 0.2)"
+                        mb={{ base: 6, md: 0 }}
+                        alt="groupchat"
+                        w={{ base: "500px", md: "600px" }}
+                        borderRadius="md"
+                        src="https://res.cloudinary.com/tea-talk/image/upload/v1708671993/realtimechat_qqcoru.gif"
+                      />
+                    </Box>
 
-                <Box textAlign="center" ml={{ md: "10" }}>
-                  <Image
-                    display="inline-block"
-                    boxShadow="2px 2px 2px 1px rgba(0, 0, 0, 0.2)"
-                    mt={{ base: 6, md: 0 }}
-                    alt="groupchat"
-                    w={{ base: "500px", md: "600px" }}
-                    borderRadius="md"
-                    src="https://res.cloudinary.com/tea-talk/image/upload/v1708671993/realtimechat_qqcoru.gif"
-                  />
-                </Box>
-              </Box>
+                    <Box>
+                      <Text
+                        fontSize={{ base: "24px", md: "32px", lg: "40px" }}
+                        fontWeight="bold"
+                        textAlign="center"
+                      >
+                        即時通訊～
+                      </Text>
+                      <Text
+                        color="#777777"
+                        fontSize="20px"
+                        textAlign="center"
+                        mt="24px"
+                      >
+                        您發送的訊息可以零時差傳遞給對方彷彿彼此身處同一空間。
+                      </Text>
+                    </Box>
+                  </Box>
+                ),
+                md: (
+                  <Box
+                    display={{ base: "block", md: "flex" }}
+                    alignItems="center"
+                    justifyContent="center"
+                    px={5}
+                  >
+                    <Box>
+                      <Text
+                        fontSize={{ base: "24px", md: "32px", lg: "40px" }}
+                        fontWeight="bold"
+                        textAlign="center"
+                      >
+                        即時通訊～
+                      </Text>
+                      <Text
+                        color="#777777"
+                        fontSize="20px"
+                        textAlign="center"
+                        mt="24px"
+                      >
+                        您發送的訊息可以零時差傳遞給對方彷彿彼此身處同一空間。
+                      </Text>
+                    </Box>
+
+                    <Box textAlign="center" ml={{ md: "10" }}>
+                      <Image
+                        display="inline-block"
+                        boxShadow="2px 2px 2px 1px rgba(0, 0, 0, 0.2)"
+                        mt={{ base: 6, md: 0 }}
+                        alt="groupchat"
+                        w={{ base: "500px", md: "600px" }}
+                        borderRadius="md"
+                        src="https://res.cloudinary.com/tea-talk/image/upload/v1708671993/realtimechat_qqcoru.gif"
+                      />
+                    </Box>
+                  </Box>
+                ),
+              })}
             </AnimatedBox>
           </Box>
 
           <Box
             bg="#FFFFFF"
-            h="700px"
+            h={{ base: "500px", md: "600px" }}
             color="#000000"
             display="flex"
             alignItems="center"
@@ -211,7 +275,7 @@ const HomePage = () => {
                 display={{ base: "block", md: "flex" }}
                 alignItems="center"
                 justifyContent="center"
-                px={10}
+                px={5}
               >
                 <Box textAlign="center" mr={{ md: "10" }}>
                   <Image
@@ -248,11 +312,11 @@ const HomePage = () => {
 
           <Box
             bg="#F6F6F6"
-            h="700px"
+            h={{ base: "550px", md: "650px" }}
             color="#000000"
             display="block"
             px="15%"
-            py={20}
+            py={{ base: "10", md: "20" }}
           >
             <Text
               fontSize={{ base: "24px", md: "32px", lg: "40px" }}
@@ -304,7 +368,7 @@ const HomePage = () => {
             </Accordion>
 
             <Text
-              my={5}
+              mb={5}
               fontSize={{ base: "24px", md: "32px" }}
               textAlign="center"
             >
@@ -338,6 +402,7 @@ const HomePage = () => {
           bg="#23272A"
           area={"footer"}
           flexDirection="column"
+          h="200px"
         >
           <Text>Peter Hsu © 2024</Text>
           <Flex my={5}>
